@@ -1,0 +1,23 @@
+Americana
+cheese, pepperoni, salami
+
+Funghi
+cheese, mushroom, olive
+
+Hawaii
+cheese, pineapple
+
+Margherita
+cheese
+
+Meatlover
+cheese, pepperoni, paprica
+
+Pepperoni
+cheese, pepperoni
+
+Salami
+cheese, salami
+
+
+
