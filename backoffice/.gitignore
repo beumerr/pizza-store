@@ -1,0 +1,39 @@
+# Dependencies
+/node_modules/
+
+# Production build
+/dist/
+/build/
+
+# Logs
+/logs/
+*.log
+
+# Obfuscated files
+*.obf.js
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+/coverage/
+
+# Misc
+.eslintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+

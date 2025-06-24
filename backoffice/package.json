@@ -1,0 +1,16 @@
+{
+  "name": "backoffice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx directus start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "directus": "^11.8.0",
+    "pg": "^8.16.2"
+  }
+}
