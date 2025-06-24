@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npx directus start",
-    "dev": "npx directus start"
+    "dev": "npx directus start",
+    "generate-types": "node scripts/generate-types.js"
   },
   "keywords": [],
   "author": "",
