@@ -3,14 +3,7 @@ import { devtools, persist } from "zustand/middleware"
 import { calculatePizzaPrice } from "shared/lib/calculations"
 
 import type { PickOptional, OptionalKeys } from "shared/util/types"
-import type {
-  Pizza,
-  Topping,
-  Size,
-  Drink,
-  Coupon,
-  CartItem as DirectusCartItem,
-} from "util/directus-types"
+import type { Pizza, Topping, Size, Drink, Coupon } from "util/directus-types"
 
 export enum PRODUCT_TYPE {
   PIZZA = "pizza",
@@ -179,7 +172,7 @@ export const useCartStore = create<CartStore>()(
         recalculatePrice: () => {
           const state = get()
           const itemsTotal = state.items.reduce((total, item) => {
-            return total + item.itemPrice! * item.quantity!
+            return total + item.itemPrice * item.quantity
           }, 0)
 
           const discountAmount = 0 // todo #US_10
