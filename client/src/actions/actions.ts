@@ -1,7 +1,7 @@
 "use server"
 
 import directus from "../lib/directus"
-import type { Showcase } from "../../../shared/util/directus-types"
+import type { Showcase } from "shared/util/directus-types"
 
 export type ActionResult<T = any> = {
   success: boolean
@@ -42,8 +42,4 @@ export async function getShowcases(): Promise<ActionResult<Showcase[]>> {
   } catch (error) {
     return handleError(error)
   }
-}
-
-export default {
-  getShowcases,
 }

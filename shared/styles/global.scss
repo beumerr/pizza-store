@@ -1,0 +1,126 @@
+:root {
+  --white: #ffffff;
+  --whiteRGB: 255, 255, 255;
+
+  --black: #000000;
+  --black1RGB: 0, 0, 0;
+
+  --creme: #f5f5f5;
+  --cremeRGB: 245, 245, 245;
+
+  --red: #fe3c4b;
+  --redRGB: 254, 60, 75;
+
+  --green: #6ec9aa;
+  --greenRGB: 110, 201, 170;
+  --greenDark: #4fa286;
+  --greenDarkRGB: 79, 162, 134;
+
+  --purple: #694256;
+  --purpleRGB: 105, 66, 86;
+  --purpleLight: #a6939c;
+  --purpleLightRGB: 166, 147, 156;
+
+  --orange: #ff962f;
+  --orangeRGB: 255, 150, 47;
+  --orangeDark: #8e1618;
+  --orangeDarkRGB: 142, 22, 24;
+
+  --pink: #fd9f9f;
+  --pinkRGB: 253, 159, 159;
+  --pinkDark: #e18888;
+  --pinkDarkRGB: 225, 136, 136;
+  --pinkLight: #ecded5;
+  --pinkLightRGB: 236, 222, 213;
+
+  --greyLight: #dcdcdc;
+  --greyLightRGB: 220, 220, 220;
+
+  --borderSmall: 4px;
+  --borderMedium: 8px;
+  --borderLarge: 16px;
+
+  --transition0: cubic-bezier(0.47, 0.01, 0.17, 1);
+}
+
+// Reset styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: normal;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+li {
+  list-style: none;
+}
+ul {
+  padding: 0;
+}
+
+// Headers
+h1,
+h2,
+h3 {
+  font-family: var(--mont);
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+h4 {
+  font-family: var(--mont);
+  font-weight: 600;
+  line-height: 1.1;
+}

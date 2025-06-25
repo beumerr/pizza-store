@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import directus from "@/actions/actions"
+import { getShowcases } from "actions/actions"
 
-import type { ActionResult } from "@/actions/actions"
-import type { Showcase } from "../../../shared/util/directus-types"
+import type { ActionResult } from "actions/actions"
+import type { Showcase } from "util/directus-types"
 
 type ServerAction<T = any, Args extends any[] = any[]> = (
   ...args: Args
@@ -71,5 +71,5 @@ export function useServerAction<T, Args extends any[] = any[]>(
 }
 
 export function useShowcases() {
-  return useServerAction<Showcase[]>(directus.getShowcases)
+  return useServerAction<Showcase[]>(getShowcases)
 }

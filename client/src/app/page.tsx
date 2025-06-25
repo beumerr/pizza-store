@@ -1,4 +1,4 @@
-import { getShowcases } from "@/actions/actions"
+import { getShowcases } from "actions/actions"
 
 export default async function Home() {
   // example - delete this
