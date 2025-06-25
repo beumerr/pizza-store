@@ -1,4 +1,4 @@
-/** * Generated TypeScript types for Directus Schema * Generated on: 2025-06-25T22:59:27.795Z */
+/** * Generated TypeScript types for Directus Schema * Generated on: 2025-06-25T23:24:32.546Z */
 export interface PizzasAndDrink {
   id: string;
 }
@@ -19,12 +19,19 @@ export interface CartItem {
   drink: number | Drink;
   productType: string;
   quantity: number;
+  pizzaToppings: number[] | CartItemTopping[];
 }
 
 export interface CartItemPizza {
   id: number;
   cartItem_id: number | CartItem;
   pizzas_id: number | Pizza;
+}
+
+export interface CartItemTopping {
+  id: number;
+  cartItem_id: number | CartItem;
+  toppings_id: number | Topping;
 }
 
 export interface Coupon {
@@ -222,6 +229,7 @@ export interface ApiCollections {
   Store: Store[];
   cartItem: CartItem[];
   cartItem_pizzas: CartItemPizza[];
+  cartItem_toppings: CartItemTopping[];
   coupons: Coupon[];
   drinks: Drink[];
   orders: Order[];
