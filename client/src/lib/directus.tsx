@@ -18,34 +18,36 @@ import {
   Query as DirectusQuery,
   CollectionType as DirectusCollectionType,
   UnpackList,
+  SingletonCollections,
+  RegularCollections,
 } from "@directus/sdk"
 
 import type { ApiCollections } from "../../../shared/util/directus-types"
-import type { ArrayKeys, NonArrayKeys, PickOptional } from "../../../shared/util/types"
+import type { PickOptional } from "../../../shared/util/types"
 
-type Schema = ApiCollections
+export type Schema = ApiCollections
 
-type SingletonKey = NonArrayKeys<Schema>
+export type SingletonKey = SingletonCollections<Schema>
 
-type CollectionKey = ArrayKeys<Schema>
+export type CollectionKey = RegularCollections<Schema>
 
-type DirectusKey = SingletonKey | CollectionKey
+export type DirectusKey = SingletonKey | CollectionKey
 
-type DirectusItemKeys = string[] | number[]
+export type DirectusItemKeys = string[] | number[]
 
-type DirectusItemKey = string | number
+export type DirectusItemKey = string | number
 
-type SingletonItem<T extends SingletonKey> = Schema[T]
+export type SingletonItem<T extends SingletonKey> = Schema[T]
 
-type CollectionItem<T extends CollectionKey> = Schema[T]
+export type CollectionItem<T extends CollectionKey> = Schema[T]
 
-type CollectionType<T> = DirectusCollectionType<Schema, T>
+export type CollectionType<T> = DirectusCollectionType<Schema, T>
 
-type DirectusInstance = DirectusClient<Schema> &
+export type DirectusInstance = DirectusClient<Schema> &
   StaticTokenClient<Schema> &
   RestClient<Schema>
 
-type DirectusOptionalKeys =
+export type DirectusOptionalKeys =
   | "id"
   | "sort"
   | "user_created"
@@ -53,13 +55,16 @@ type DirectusOptionalKeys =
   | "user_updated"
   | "date_updated"
 
-type CollectionItemInput<T> = PickOptional<T, DirectusOptionalKeys>
+export type CollectionItemInput<T> = PickOptional<T, DirectusOptionalKeys>
 
-type CollectionItemUpdate<T extends DirectusKey> = UnpackList<Schema[T]>
+export type CollectionItemUpdate<T extends DirectusKey> = UnpackList<Schema[T]>
 
-type CollectionQuery<T extends CollectionKey> = DirectusQuery<Schema, CollectionType<T>>
+export type CollectionQuery<T extends CollectionKey> = DirectusQuery<
+  Schema,
+  CollectionType<T>
+>
 
-type ItemQuery<T extends DirectusKey> = DirectusQuery<Schema, Schema[T]>
+export type ItemQuery<T extends DirectusKey> = DirectusQuery<Schema, Schema[T]>
 
 interface DirectusState {
   client: DirectusInstance | null
@@ -89,12 +94,6 @@ const createClient = () => {
           ...options,
           cache: "no-store", // Prevent Next.js caching issues
         }),
-        onResponse: (response, request) => {
-          if (!response.ok) {
-            console.error(`Directus API error (${response.status})`, request)
-          }
-          return response
-        },
       })
     )
 
@@ -132,7 +131,7 @@ export const readItem = async <
 
 export const readItems = async <
   Key extends CollectionKey,
-  Type extends CollectionItem<Key>[],
+  Type extends CollectionItem<Key>,
   Query extends CollectionQuery<Key>,
 >(
   collection: Key,
