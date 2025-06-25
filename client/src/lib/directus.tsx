@@ -23,7 +23,7 @@ import {
 } from "@directus/sdk"
 
 import type { ApiCollections } from "../../../shared/util/directus-types"
-import type { PickOptional } from "../../../shared/util/types"
+import type { OptionalKeys, PickOptional } from "../../../shared/util/types"
 
 export type Schema = ApiCollections
 
@@ -47,15 +47,7 @@ export type DirectusInstance = DirectusClient<Schema> &
   StaticTokenClient<Schema> &
   RestClient<Schema>
 
-export type DirectusOptionalKeys =
-  | "id"
-  | "sort"
-  | "user_created"
-  | "date_created"
-  | "user_updated"
-  | "date_updated"
-
-export type CollectionItemInput<T> = PickOptional<T, DirectusOptionalKeys>
+export type CollectionItemInput<T> = PickOptional<T, OptionalKeys>
 
 export type CollectionItemUpdate<T extends DirectusKey> = UnpackList<Schema[T]>
 

@@ -1,10 +1,30 @@
-/** * Generated TypeScript types for Directus Schema * Generated on: 2025-06-24T14:41:19.319Z */
+/** * Generated TypeScript types for Directus Schema * Generated on: 2025-06-25T22:59:27.795Z */
 export interface PizzasAndDrink {
   id: string;
 }
 
 export interface Store {
   id: string;
+}
+
+export interface CartItem {
+  id: number;
+  user_created: string | DirectusUser;
+  date_created: 'datetime';
+  user_updated: string | DirectusUser;
+  date_updated: 'datetime';
+  pizza: number | Pizza;
+  pizzaSize: number | Size;
+  uid: string;
+  drink: number | Drink;
+  productType: string;
+  quantity: number;
+}
+
+export interface CartItemPizza {
+  id: number;
+  cartItem_id: number | CartItem;
+  pizzas_id: number | Pizza;
 }
 
 export interface Coupon {
@@ -38,20 +58,12 @@ export interface Order {
   date_created: 'datetime';
   user_updated: string | DirectusUser;
   date_updated: 'datetime';
-  pizzas: number[] | OrdersPizza[];
   totalInc: number;
   totalExc: number;
   taxPercentage: number;
-  coupon: number[] | Coupon[];
   discountPercentage: number;
   discountValue: number;
   orderStatus: string;
-}
-
-export interface OrdersPizza {
-  id: number;
-  orders_id: number | Order;
-  pizzas_id: number | Pizza;
 }
 
 export interface Pizza {
@@ -60,10 +72,10 @@ export interface Pizza {
   date_created: 'datetime';
   user_updated: string | DirectusUser;
   date_updated: 'datetime';
-  type: string;
   name: string;
   toppings: number[] | PizzasTopping[];
   image: string | DirectusFile;
+  pizzaType: string;
 }
 
 export interface PizzasTopping {
@@ -208,10 +220,11 @@ export interface DirectusRole {
 export interface ApiCollections {
   Pizzas_and_drinks: PizzasAndDrink[];
   Store: Store[];
+  cartItem: CartItem[];
+  cartItem_pizzas: CartItemPizza[];
   coupons: Coupon[];
   drinks: Drink[];
   orders: Order[];
-  orders_pizzas: OrdersPizza[];
   pizzas: Pizza[];
   pizzas_toppings: PizzasTopping[];
   settings: Settings;
