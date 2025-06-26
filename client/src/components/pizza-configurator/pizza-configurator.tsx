@@ -101,6 +101,14 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
           selectedToppings={selectedToppings}
         />
       </div>
+
+      <div className={style.price}>
+        <PriceDisplay
+          basePrice={priceBreakdown.basePrice}
+          total={priceBreakdown.total}
+          onAddToCart={handleAddToCart}
+        />
+      </div>
     </div>
   )
 }
