@@ -2,48 +2,18 @@ import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
 import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
 
-import type { PickOptional, OptionalKeys } from "shared/util/types"
-import type { Pizza, Topping, Size, Drink, Coupon } from "util/directus-types"
+import { PRODUCT_TYPE } from "shared/util/types"
+import { validateCartItems, validatePizza } from "shared/lib/validations"
 
-export enum PRODUCT_TYPE {
-  PIZZA = "pizza",
-  DRINK = "drink",
-}
-
-export type TPizza = PickOptional<Pizza, OptionalKeys | "image" | "toppings">
-export type TDrink = PickOptional<Drink, OptionalKeys> & { id: number }
-export type TSize = PickOptional<Size, OptionalKeys> & { id: number }
-export type TTopping = PickOptional<Topping, OptionalKeys> & { id: number }
-
-export interface BaseCartItem {
-  uid: string
-  quantity: number
-  itemPrice: number
-}
-
-export interface DrinkCartItem {
-  productType: PRODUCT_TYPE.DRINK
-  drink: TDrink
-}
-
-export interface PizzaCartItem {
-  productType: PRODUCT_TYPE.PIZZA
-  pizza: TPizza
-  pizzaSize: TSize
-  pizzaToppings?: TTopping[]
-}
-
-export type CartItem = (DrinkCartItem | PizzaCartItem) & BaseCartItem
-
-export type ItemPrice = Pick<BaseCartItem, "itemPrice">
+import type { CartItem, DrinkCartItem, ItemPrice, PizzaCartItem } from "shared/util/types"
+import type { Coupon } from "util/directus-types"
+import { validate } from "webpack"
 
 export interface CartState {
   items: CartItem[]
   coupon: Coupon | null
   discountAmount: number
   total: number
-  error: string | null
-  errorDuration: number
 }
 
 interface CartActions {
@@ -57,6 +27,7 @@ interface CartActions {
   recalculatePrice: () => void
   submitOrder: () => Promise<void>
   setError: (error: string) => void
+  isInvalidOrder: () => false | string
 }
 
 type CartStore = CartState & CartActions
@@ -66,8 +37,6 @@ const initialState: CartState = {
   coupon: null,
   discountAmount: 0,
   total: 0,
-  error: null,
-  errorDuration: 5000,
 }
 
 export const useCartStore = create<CartStore>()(
@@ -82,21 +51,20 @@ export const useCartStore = create<CartStore>()(
           return get().items
         },
         setError: (error: string) => {
-          set({
-            error,
-          })
-
-          setTimeout(() => {
-            set({
-              error: null,
-            })
-          }, get().errorDuration)
+          alert(error)
+          // todo improve visual feedback
         },
         addCartItem: (productType: PRODUCT_TYPE, item: PizzaCartItem | DrinkCartItem) => {
           const state = get()
-          if (!item) {
-            state.setError("Item is missing")
-            return
+
+          if (productType === PRODUCT_TYPE.PIZZA) {
+            const pizza = item as PizzaCartItem
+            const error = validatePizza(pizza.pizzaSize, pizza.pizzaToppings)
+
+            if (error) {
+              alert(error)
+              return
+            }
           }
 
           const productMap: Record<
@@ -171,7 +139,6 @@ export const useCartStore = create<CartStore>()(
             coupon: null,
             discountAmount: 0,
             total: 0,
-            error: null,
           })
         },
         recalculatePrice: () => {
@@ -189,12 +156,20 @@ export const useCartStore = create<CartStore>()(
           })
         },
         submitOrder: async () => {
-          const { items } = get()
-          if (items.length === 0) {
-            get().setError("Cart is empty")
+          const error = get().isInvalidOrder()
+          if (error) {
+            alert(error)
             return
           }
           // todo #US_8
+          alert("Order submitted successfully!") // todo #US_9
+          get().clearCart()
+        },
+        isInvalidOrder: () => {
+          const items = get().items
+          const error = validateCartItems(items)
+
+          return error
         },
       }),
       {
@@ -202,8 +177,32 @@ export const useCartStore = create<CartStore>()(
         partialize: (state) => ({
           items: state.items,
         }),
+        onRehydrateStorage: () => (state) => {
+          state?.recalculatePrice()
+        },
       }
     ),
     { name: "pizza-cart" }
   )
 )
+
+export const getTitle = (item: PizzaCartItem | DrinkCartItem) => {
+  const titleMap: Record<PRODUCT_TYPE, () => { name: string; sub?: string }> = {
+    [PRODUCT_TYPE.PIZZA]: () => {
+      const { pizza, pizzaSize, pizzaToppings } = item as PizzaCartItem
+      const name = pizza.name || "Your pizza"
+      const size = pizzaSize.sizeDiameter
+
+      return {
+        name: `${name} (${size}CM)`,
+        sub: pizzaToppings?.map((t) => t.name).join(", ") || "No toppings",
+      }
+    },
+    [PRODUCT_TYPE.DRINK]: () => {
+      const { drink } = item as DrinkCartItem
+      return { name: drink.name }
+    },
+  }
+
+  return titleMap[item.productType]()
+}

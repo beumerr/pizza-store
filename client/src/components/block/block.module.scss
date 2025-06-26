@@ -1,0 +1,37 @@
+.Block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: var(--borderMedium);
+  font-family: var(--mont);
+  padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 18px);
+  justify-content: center;
+
+  span {
+    line-height: 100%;
+    font-size: var(--fontSmall);
+  }
+
+  &.purple {
+    background-color: var(--purple);
+    color: var(--white);
+
+    .value {
+      color: var(--white);
+    }
+  }
+
+  &.creme {
+    background-color: var(--purple);
+    background: var(--creme);
+
+    .value {
+      color: var(--purple);
+    }
+  }
+
+  .label {
+    font-weight: 900;
+    color: var(--purpleLight);
+  }
+}

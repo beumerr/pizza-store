@@ -1,6 +1,7 @@
-import { cs } from "shared/util/util"
+import { cs, formatPrice } from "shared/util/util"
 import style from "./pizza-configurator.module.scss"
 import Button from "../button/button"
+import Block from "../block/block"
 
 interface PriceDisplayProps {
   basePrice: number
@@ -15,16 +16,8 @@ export default function PriceDisplay({
 }: PriceDisplayProps) {
   return (
     <div className={style.PriceDisplay}>
-      <div className={style.block}>
-        <span className={style.label}>Vanaf</span>
-        <span className={style.value}>€ {basePrice.toFixed(2)}</span>
-      </div>
-
-      <div className={cs(style.block, style.total)}>
-        <span className={style.label}>Prijs</span>
-        <span className={cs(style.value, style.large)}>€ {total.toFixed(2)}</span>
-      </div>
-
+      <Block backgroundColor="creme" label="From" value={formatPrice(basePrice)} />
+      <Block label="Price" value={formatPrice(total)} />
       <Button className={style.submit} size="medium" color="green" onClick={onAddToCart}>
         Add
       </Button>

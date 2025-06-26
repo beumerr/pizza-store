@@ -1,7 +1,7 @@
 .PizzaWrapper {
   width: 100%;
   height: 100%;
-  border-radius: var(--radiusLarge);
+  border-radius: var(--borderLarge);
   border: 1px solid rgba(var(--purpleRGB), 0.2);
   position: relative;
   display: flex;
@@ -41,14 +41,13 @@
     padding: 10px 40px 10px 15px;
     border: 2px solid var(--greyLight);
     border-radius: 100px;
-    background: transparent;
+    background: var(--creme);
     font-family: var(--mont);
     font-weight: 600;
     outline: none;
     border: 1px solid var(--purpleLight);
     color: var(--purple);
     cursor: pointer;
-
     appearance: none;
     font-size: var(--fontSmall);
     transition: border var(--transition0) 0.3s;
@@ -68,7 +67,6 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  transform: translateX(-40px);
 
   .item {
     display: flex;
@@ -81,6 +79,7 @@
     transition: background-color 0.2s var(--transition0);
     font-size: var(--fontSmall);
     border: 2px solid var(--creme);
+    user-select: none;
 
     &:hover {
       background-color: var(--pinkLight);
@@ -126,6 +125,12 @@
       color: var(--purpleLight);
       margin-left: 10px;
     }
+
+    .free {
+      font-family: var(--mont);
+      font-weight: 900;
+      color: var(--green);
+    }
   }
 }
 
@@ -146,38 +151,6 @@
 .PriceDisplay {
   display: flex;
   gap: 10px;
-
-  .block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    border-radius: var(--borderMedium);
-    font-family: var(--mont);
-    padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 18px);
-    justify-content: center;
-
-    &.total {
-      background-color: var(--purple);
-      color: var(--white);
-
-      .value {
-        color: var(--white);
-      }
-    }
-
-    .label {
-      font-weight: 900;
-      color: var(--purpleLight);
-    }
-
-    span {
-      line-height: 100%;
-      font-size: var(--fontSmall);
-    }
-    .value {
-      color: var(--purple);
-    }
-  }
 }
 
 .PizzaConfigurator {
@@ -191,6 +164,7 @@
     flex: 1;
     position: absolute;
     left: 0;
+    transform: translateX(-31px);
   }
 
   > .preview {
@@ -203,6 +177,29 @@
     position: absolute;
     bottom: 30px;
     right: 30px;
+  }
+
+  > .info {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+
+    span {
+      font-family: var(--mont);
+      color: var(--purpleLight);
+      font-size: var(--fontSmall);
+      display: block;
+
+      i {
+        font-style: normal;
+        font-weight: 900;
+        background: var(--purple);
+        color: var(--white);
+        border-radius: var(--borderSmall);
+        padding: 0 5px;
+        display: inline-block;
+      }
+    }
   }
 }
 

@@ -5,6 +5,7 @@ export interface PizzaConfig {
     crustOffset: number
   }
   toppings: {
+    maxFree: number
     large: {
       scale: number
     }
@@ -36,6 +37,7 @@ export const PIZZA_CONFIG: PizzaConfig = {
     crustOffset: 40,
   },
   toppings: {
+    maxFree: 3,
     large: {
       scale: 0.8,
     },

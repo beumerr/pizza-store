@@ -1,4 +1,4 @@
-import type { TSize } from "stores/cart"
+import type { TSize } from "shared/util/types"
 
 import style from "./pizza-configurator.module.scss"
 

@@ -1,0 +1,99 @@
+.CartSummary {
+  padding: clamp(20px, 2vw, 30px) clamp(30px, 2.5vw, 40px);
+  border: 1px solid rgba(var(--purpleRGB), 0.2);
+  border-radius: var(--borderLarge);
+
+  $spacer: clamp(10px, 1vw, 20px);
+
+  .header {
+    font-family: var(--mont);
+    font-weight: 600;
+    color: var(--purple);
+    font-size: var(--fontLarge);
+    margin-bottom: $spacer;
+    display: block;
+  }
+  .PriceList {
+    margin-bottom: $spacer;
+  }
+}
+
+.PriceList {
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 0.6vw, 10px);
+
+    li {
+      border-radius: var(--borderSmall);
+      border: 1px dashed rgba(var(--purpleRGB), 0.2);
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+
+      .content {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          font-family: var(--mont);
+          font-weight: 900;
+          color: var(--purple);
+          font-size: var(--fontSmall);
+          text-transform: capitalize;
+          line-height: 100%;
+        }
+
+        .sub {
+          font-family: var(--mont);
+          font-weight: 600;
+          color: var(--purpleLight);
+          font-size: var(--fontSmall);
+          line-height: 100%;
+        }
+
+        .empty {
+          padding: 5px 0;
+        }
+      }
+
+      .controls {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        .price {
+          white-space: nowrap;
+          font-family: var(--mont);
+          font-weight: 900;
+          color: var(--purple);
+          font-size: var(--fontSmall);
+        }
+
+        .remove {
+          flex-shrink: 0;
+          width: 10px;
+          filter: var(--purpleFilter);
+          opacity: 0.8;
+          transition: opacity 0.2s var(--transition0);
+
+          &:hover {
+            opacity: 1;
+          }
+
+          svg {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.CartControls {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}

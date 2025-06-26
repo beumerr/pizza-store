@@ -3,15 +3,17 @@
 import SizeSelector from "./pizza-size-selector"
 import ToppingsList from "./pizza-topping-list"
 import PizzaCanvas from "./pizza-canvas"
+import PriceDisplay from "./pizza-price-display"
 
 import { useState, useMemo } from "react"
-import { useCartStore, PRODUCT_TYPE } from "stores/cart"
+import { useCartStore } from "stores/cart"
 import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
-import type { TSize, TTopping, TPizza } from "stores/cart"
+import { PIZZA_CONFIG } from "shared/cfg/pizza-config"
+import { PRODUCT_TYPE } from "shared/util/types"
+
+import type { TSize, TTopping, TPizza } from "shared/util/types"
 
 import style from "./pizza-configurator.module.scss"
-import { PIZZA_CONFIG } from "shared/cfg/pizza-config"
-
 interface PizzaConfiguratorProps {
   sizes: TSize[]
   toppings: TTopping[]
@@ -33,7 +35,10 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
   }, [selectedSize, selectedToppings])
 
   const handleToppingToggle = (topping: TTopping) => {
-    if (selectedToppings.length >= PIZZA_CONFIG.validation.maxToppings) {
+    if (
+      !selectedToppings.some((t) => t.id === topping.id) &&
+      selectedToppings.length >= PIZZA_CONFIG.validation.maxToppings
+    ) {
       alert(`You can only select up to ${PIZZA_CONFIG.validation.maxToppings} toppings.`)
       return
     }
@@ -54,16 +59,6 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
   }
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
-      alert("Select a format")
-      return
-    }
-
-    if (selectedToppings.length < PIZZA_CONFIG.validation.minToppings) {
-      alert("You must select at least 2 toppings")
-      return
-    }
-
     const customPizza: TPizza = {
       name: "custom",
       pizzaType: "generated",
@@ -109,6 +104,19 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
           onAddToCart={handleAddToCart}
         />
       </div>
+
+      {selectedToppings.length < PIZZA_CONFIG.toppings.maxFree && (
+        <div className={style.info}>
+          <span>
+            Select{" "}
+            <i>{Math.max(0, PIZZA_CONFIG.toppings.maxFree - selectedToppings.length)}</i>{" "}
+            more free topping
+            {selectedToppings.length === PIZZA_CONFIG.toppings.maxFree - 1
+              ? ""
+              : "s"}{" "}
+          </span>
+        </div>
+      )}
     </div>
   )
 }

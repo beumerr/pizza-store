@@ -85,7 +85,7 @@ export const usePizzaCanvas = ({
     }
 
     renderPizza()
-  }, [selectedSize, selectedToppings, pizzaDiameter, directusUrl])
+  }, [selectedToppings, pizzaDiameter, directusUrl])
 
   return canvasRef
 }

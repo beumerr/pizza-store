@@ -4,10 +4,10 @@
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-radius: var(--borderMedium);
-
   font-family: var(--mont);
   font-weight: 900;
   color: var(--white);
+  user-select: none;
 
   &.green {
     background-color: var(--green);
