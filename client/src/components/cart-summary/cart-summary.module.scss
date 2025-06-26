@@ -2,7 +2,6 @@
   padding: clamp(20px, 2vw, 30px) clamp(30px, 2.5vw, 40px);
   border: 1px solid rgba(var(--purpleRGB), 0.2);
   border-radius: var(--borderLarge);
-
   $spacer: clamp(10px, 1vw, 20px);
 
   .header {
@@ -13,8 +12,70 @@
     margin-bottom: $spacer;
     display: block;
   }
+
+  .header,
+  .CartDrinkSelect,
   .PriceList {
     margin-bottom: $spacer;
+  }
+}
+
+.CartDrinkSelect {
+  display: flex;
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    transform: rotate(90deg);
+    transform-origin: center 0;
+    background: url("/assets/img/svg/chevron.svg") no-repeat center center;
+    filter: var(--purpleFilter);
+    opacity: 0.5;
+    transition: opacity 0.2s var(--transition0);
+  }
+
+  &:hover:after {
+    opacity: 1;
+  }
+
+  > span {
+    font-family: var(--mont);
+    font-weight: 600;
+    color: var(--purpleLight);
+    font-size: var(--fontSmall);
+    display: block;
+  }
+
+  .select {
+    border-radius: var(--borderSmall);
+    border: 1px solid rgba(var(--purpleRGB), 0.2);
+    padding: 10px 15px;
+    width: 100%;
+    background-color: var(--creme);
+    color: var(--purple);
+    font-family: var(--mont);
+    font-weight: 900;
+    font-size: var(--fontMedium);
+    cursor: pointer;
+    appearance: none;
+    transition: border var(--transition0) 0.3s;
+
+    option {
+      font-family: var(--mont);
+      font-weight: 600;
+      color: var(--purple);
+      background-color: var(--creme);
+      font-size: var(--fontSmall);
+    }
+    &:hover {
+      border-color: rgba(var(--purpleRGB), 1);
+    }
   }
 }
 

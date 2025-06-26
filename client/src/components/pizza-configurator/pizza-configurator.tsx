@@ -14,6 +14,7 @@ import { PRODUCT_TYPE } from "shared/util/types"
 import type { TSize, TTopping, TPizza } from "shared/util/types"
 
 import style from "./pizza-configurator.module.scss"
+
 interface PizzaConfiguratorProps {
   sizes: TSize[]
   toppings: TTopping[]
@@ -31,6 +32,7 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
     if (!selectedSize) {
       return { basePrice: 0, toppingsPrice: 0, total: 0 }
     }
+
     return calculatePizzaPriceBreakdown(selectedSize, selectedToppings)
   }, [selectedSize, selectedToppings])
 
@@ -111,9 +113,7 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
             Select{" "}
             <i>{Math.max(0, PIZZA_CONFIG.toppings.maxFree - selectedToppings.length)}</i>{" "}
             more free topping
-            {selectedToppings.length === PIZZA_CONFIG.toppings.maxFree - 1
-              ? ""
-              : "s"}{" "}
+            {selectedToppings.length === PIZZA_CONFIG.toppings.maxFree - 1 ? "" : "s"}
           </span>
         </div>
       )}

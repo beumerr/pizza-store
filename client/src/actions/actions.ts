@@ -1,7 +1,7 @@
 "use server"
 
 import directus from "../lib/directus"
-import type { Showcase, Size, Topping } from "shared/util/directus-types"
+import type { Drink, Showcase, Size, Topping } from "shared/util/directus-types"
 
 export type ActionResult<T = any> = {
   success: boolean
@@ -79,6 +79,18 @@ export async function getPizzaConfiguratorData(): Promise<
     const sizes = await getSizes()
     const toppings = await getToppings()
     const data = { sizes, toppings }
+
+    return { success: true, data }
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export async function getDrinks(): Promise<ActionResult<Drink[]>> {
+  try {
+    const data = await directus.readItems("drinks", {
+      fields: ["*", { image: ["id"] }],
+    })
 
     return { success: true, data }
   } catch (error) {
