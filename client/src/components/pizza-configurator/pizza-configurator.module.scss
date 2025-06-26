@@ -1,0 +1,218 @@
+.PizzaWrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radiusLarge);
+  border: 1px solid rgba(var(--purpleRGB), 0.2);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.SizeSelector {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+
+  &:after {
+    content: "";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    transform: rotate(90deg);
+    transform-origin: center 0;
+    background: url("/assets/img/svg/chevron.svg") no-repeat center center;
+    filter: var(--purpleFilter);
+  }
+
+  .label {
+    font-family: var(--mont);
+    color: var(--purpleLight);
+    font-size: var(--fontSmall);
+    padding: 0 20px;
+  }
+
+  .dropdown {
+    padding: 10px 40px 10px 15px;
+    border: 2px solid var(--greyLight);
+    border-radius: 100px;
+    background: transparent;
+    font-family: var(--mont);
+    font-weight: 600;
+    outline: none;
+    border: 1px solid var(--purpleLight);
+    color: var(--purple);
+    cursor: pointer;
+
+    appearance: none;
+    font-size: var(--fontSmall);
+    transition: border var(--transition0) 0.3s;
+
+    &:hover {
+      border-color: var(--purple);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--purple);
+    }
+  }
+}
+
+.ToppingsList {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transform: translateX(-40px);
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 100px;
+    cursor: pointer;
+    background-color: #f1e5db;
+    padding: 5px 10px 5px 5px;
+    transition: background-color 0.2s var(--transition0);
+    font-size: var(--fontSmall);
+    border: 2px solid var(--creme);
+
+    &:hover {
+      background-color: var(--pinkLight);
+    }
+
+    .checkbox {
+      display: none;
+
+      &:checked + .indicator {
+        &:after {
+          content: "";
+          width: 8px;
+          height: 8px;
+          background-color: var(--purple);
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+
+    .indicator {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--purple);
+      border-radius: 50%;
+      position: relative;
+      transition: all 0.2s var(--transition0);
+    }
+
+    .name {
+      flex: 1;
+      font-family: var(--mont);
+      font-weight: 600;
+      color: var(--purple);
+    }
+
+    .price {
+      font-family: var(--mont);
+      font-weight: 600;
+      color: var(--purpleLight);
+      margin-left: 10px;
+    }
+  }
+}
+
+.PizzaCanvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--borderLarge);
+
+  > canvas {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
+.PriceDisplay {
+  display: flex;
+  gap: 10px;
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: var(--borderMedium);
+    font-family: var(--mont);
+    padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 18px);
+    justify-content: center;
+
+    &.total {
+      background-color: var(--purple);
+      color: var(--white);
+
+      .value {
+        color: var(--white);
+      }
+    }
+
+    .label {
+      font-weight: 900;
+      color: var(--purpleLight);
+    }
+
+    span {
+      line-height: 100%;
+      font-size: var(--fontSmall);
+    }
+    .value {
+      color: var(--purple);
+    }
+  }
+}
+
+.PizzaConfigurator {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > .toppings {
+    flex: 1;
+    position: absolute;
+    left: 0;
+  }
+
+  > .preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  > .price {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .PizzaConfigurator {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+
+    .preview {
+      order: -1;
+    }
+  }
+}

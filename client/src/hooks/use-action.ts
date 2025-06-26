@@ -32,7 +32,6 @@ export function useServerAction<T, Args extends any[] = any[]>(
 
       try {
         const result = await serverAction(...args)
-
         if (result.success) {
           setData(result.data ?? null)
           setError(null)

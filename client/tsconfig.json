@@ -25,6 +25,8 @@
       "lib/*": ["./src/lib/*"],
       "actions/*": ["./src/actions/*"],
       "shared/*": ["./shared/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "stores/*": ["./src/stores/*"],
       "util/*": ["./shared/util/*"]
     }
   },

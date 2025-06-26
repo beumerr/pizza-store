@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
-import { calculatePizzaPrice } from "shared/lib/calculations"
+import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
 
 import type { PickOptional, OptionalKeys } from "shared/util/types"
 import type { Pizza, Topping, Size, Drink, Coupon } from "util/directus-types"
@@ -10,29 +10,34 @@ export enum PRODUCT_TYPE {
   DRINK = "drink",
 }
 
-interface BaseCartItem {
+export type TPizza = PickOptional<Pizza, OptionalKeys | "image" | "toppings">
+export type TDrink = PickOptional<Drink, OptionalKeys> & { id: number }
+export type TSize = PickOptional<Size, OptionalKeys> & { id: number }
+export type TTopping = PickOptional<Topping, OptionalKeys> & { id: number }
+
+export interface BaseCartItem {
   uid: string
   quantity: number
   itemPrice: number
 }
 
-interface DrinkCartItem {
+export interface DrinkCartItem {
   productType: PRODUCT_TYPE.DRINK
-  drink: PickOptional<Drink, OptionalKeys>
+  drink: TDrink
 }
 
-interface PizzaCartItem {
+export interface PizzaCartItem {
   productType: PRODUCT_TYPE.PIZZA
-  pizza: PickOptional<Pizza, OptionalKeys>
-  pizzaSize: PickOptional<Size, OptionalKeys> & { id: number }
-  pizzaToppings?: (PickOptional<Topping, OptionalKeys> & { id: number })[]
+  pizza: TPizza
+  pizzaSize: TSize
+  pizzaToppings?: TTopping[]
 }
 
-type CartItem = (DrinkCartItem | PizzaCartItem) & BaseCartItem
+export type CartItem = (DrinkCartItem | PizzaCartItem) & BaseCartItem
 
-type ItemPrice = Pick<BaseCartItem, "itemPrice">
+export type ItemPrice = Pick<BaseCartItem, "itemPrice">
 
-interface CartState {
+export interface CartState {
   items: CartItem[]
   coupon: Coupon | null
   discountAmount: number
@@ -105,10 +110,10 @@ export const useCartStore = create<CartStore>()(
               const data: PizzaCartItem & ItemPrice = {
                 ...pizzaItem,
                 productType: PRODUCT_TYPE.PIZZA,
-                itemPrice: calculatePizzaPrice(
+                itemPrice: calculatePizzaPriceBreakdown(
                   pizzaItem.pizzaSize,
                   pizzaItem.pizzaToppings
-                ),
+                ).total,
               }
 
               return data

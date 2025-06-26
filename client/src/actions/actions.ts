@@ -1,12 +1,16 @@
 "use server"
 
 import directus from "../lib/directus"
-import type { Showcase } from "shared/util/directus-types"
+import type { Showcase, Size, Topping } from "shared/util/directus-types"
 
 export type ActionResult<T = any> = {
   success: boolean
   data?: T
   error?: string
+}
+export interface PizzaConfiguratorData {
+  sizes: ActionResult<Size[]>
+  toppings: ActionResult<Topping[]>
 }
 
 const handleError = (error: unknown): ActionResult => {
@@ -37,6 +41,44 @@ export async function getShowcases(): Promise<ActionResult<Showcase[]>> {
         },
       ],
     })
+
+    return { success: true, data }
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export async function getToppings(): Promise<ActionResult<Topping[]>> {
+  try {
+    const data = await directus.readItems("toppings", {
+      fields: ["*", { icon: ["id"] }],
+    })
+
+    return { success: true, data }
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export async function getSizes(): Promise<ActionResult<Size[]>> {
+  try {
+    const data = await directus.readItems("sizes", {
+      fields: ["*"],
+    })
+
+    return { success: true, data }
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export async function getPizzaConfiguratorData(): Promise<
+  ActionResult<PizzaConfiguratorData>
+> {
+  try {
+    const sizes = await getSizes()
+    const toppings = await getToppings()
+    const data = { sizes, toppings }
 
     return { success: true, data }
   } catch (error) {

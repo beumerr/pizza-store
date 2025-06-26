@@ -5,8 +5,8 @@
   --black: #000000;
   --black1RGB: 0, 0, 0;
 
-  --creme: #f5f5f5;
-  --cremeRGB: 245, 245, 245;
+  --creme: #fef5e8;
+  --cremeRGB: 254, 245, 232;
 
   --red: #fe3c4b;
   --redRGB: 254, 60, 75;
@@ -15,11 +15,15 @@
   --greenRGB: 110, 201, 170;
   --greenDark: #4fa286;
   --greenDarkRGB: 79, 162, 134;
+  --greenLight: #81dbbc;
+  --greenLightRGB: 129, 219, 188;
 
   --purple: #694256;
   --purpleRGB: 105, 66, 86;
   --purpleLight: #a6939c;
   --purpleLightRGB: 166, 147, 156;
+  --purpleFilter: brightness(0) saturate(100%) invert(28%) sepia(6%) saturate(3836%)
+    hue-rotate(277deg) brightness(84%) contrast(78%);
 
   --orange: #ff962f;
   --orangeRGB: 255, 150, 47;
@@ -40,6 +44,10 @@
   --borderMedium: 8px;
   --borderLarge: 16px;
 
+  --fontSmall: clamp(10px, 1.2vw, 12px);
+  --fontMedium: clamp(12px, 1.4vw, 16px);
+  --fontLarge: clamp(14px, 1.6vw, 20px);
+
   --transition0: cubic-bezier(0.47, 0.01, 0.17, 1);
 }
 
@@ -58,6 +66,8 @@ body {
   line-height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--creme);
+  padding: 100px;
 }
 
 img,
