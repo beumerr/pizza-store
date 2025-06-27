@@ -22,6 +22,7 @@ export type TSize = PickOptional<Size, OptionalKeys> & { id: number }
 export type TTopping = PickOptional<Topping, OptionalKeys> & { id: number }
 
 export interface BaseCartItem {
+  id?: number
   uid: string
   quantity: number
   itemPrice: number
@@ -42,3 +43,15 @@ export interface PizzaCartItem {
 export type CartItem = (DrinkCartItem | PizzaCartItem) & BaseCartItem
 
 export type ItemPrice = Pick<BaseCartItem, "itemPrice">
+
+export type DeepPartial<T> =
+  T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends object
+      ? { [P in keyof T]?: DeepPartial<T[P]> }
+      : T
+
+export type ResponseType = {
+  error?: string
+  success?: boolean
+}

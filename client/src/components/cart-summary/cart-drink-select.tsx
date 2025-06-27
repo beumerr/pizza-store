@@ -7,7 +7,7 @@ import { useDrinks } from "@/hooks/use-action"
 import style from "./cart-summary.module.scss"
 
 export default function CartDrinkSelect() {
-  const { execute, loading, data } = useDrinks()
+  const { execute, loading, data, error } = useDrinks()
   const { addCartItem, setError } = useCartStore()
   const selectRef = useRef<HTMLSelectElement>(null)
 
@@ -43,9 +43,9 @@ export default function CartDrinkSelect() {
 
   return (
     <div className={cs(style.CartDrinkSelect)}>
-      {loading || data === null ? (
-        <span className={style.select}>Loading drinks...</span>
-      ) : (
+      {loading && <span className={style.select}>Loading drinks...</span>}
+      {error && <span className={style.select}>No drinks available</span>}
+      {data && (
         <select
           className={style.select}
           ref={selectRef}

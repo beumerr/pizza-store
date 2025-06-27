@@ -1,6 +1,6 @@
 import { calculateSingleToppingPrice } from "shared/lib/calculations"
 import { useMemo } from "react"
-import { PIZZA_CONFIG } from "shared/cfg/pizza-config"
+import { STORE_CONFIG } from "shared/cfg/store-config"
 import { formatPrice } from "shared/util/util"
 
 import type { TTopping, TSize } from "shared/util/types"
@@ -25,7 +25,7 @@ export default function ToppingsList({
   }
 
   const freeToppingIds = useMemo(() => {
-    if (!selectedSize || selectedToppings.length <= PIZZA_CONFIG.toppings.maxFree) {
+    if (!selectedSize || selectedToppings.length <= STORE_CONFIG.toppings.maxFree) {
       return selectedToppings.map((t) => t.id)
     }
 
@@ -35,7 +35,7 @@ export default function ToppingsList({
         price: calculateSingleToppingPrice(selectedSize, topping),
       }))
       .sort((a, b) => a.price - b.price)
-      .slice(0, PIZZA_CONFIG.toppings.maxFree)
+      .slice(0, STORE_CONFIG.toppings.maxFree)
 
     return sortedByPrice.map((t) => t.id)
   }, [selectedToppings, selectedSize])

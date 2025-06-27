@@ -1,6 +1,6 @@
 "use server"
 
-import directus from "../lib/directus"
+import directus from "lib/directus"
 import type { Drink, Showcase, Size, Topping } from "shared/util/directus-types"
 
 export type ActionResult<T = any> = {

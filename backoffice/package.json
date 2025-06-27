@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx directus start",
+    "predev": "node scripts/setup-symlink.js",
+    "prebuild": "node scripts/setup-symlink.js",
+    "prestart": "node scripts/setup-symlink.js",
     "dev": "npx directus start",
+    "start": "npx directus start",
     "generate-types": "node scripts/generate-types.js"
   },
   "keywords": [],

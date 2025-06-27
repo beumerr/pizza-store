@@ -1,6 +1,6 @@
-import { PIZZA_CONFIG } from "../cfg/pizza-config"
-
-import type { CartItem, PRODUCT_TYPE, TSize, TTopping } from "../util/types"
+import { STORE_CONFIG } from "../cfg/store-config"
+import { PRODUCT_TYPE } from "../util/types"
+import type { CartItem, TSize, TTopping } from "../util/types"
 
 export const validatePizza = (size: TSize, toppings?: TTopping[]): string | false => {
   const sizeError = validateSize(size)
@@ -25,23 +25,27 @@ export const validateSize = (size: TSize | null): string | false => {
 }
 
 export const validateToppings = (toppings?: TTopping[]): string | false => {
-  if (!toppings || toppings.length < PIZZA_CONFIG.validation.minToppings) {
+  if (!toppings || toppings.length < STORE_CONFIG.validation.minToppings) {
     return "You must select at least 2 toppings"
   }
 
-  if (toppings.length > PIZZA_CONFIG.validation.maxToppings) {
-    return `You can only select up to ${PIZZA_CONFIG.validation.maxToppings} toppings`
+  if (toppings.length > STORE_CONFIG.validation.maxToppings) {
+    return `You can only select up to ${STORE_CONFIG.validation.maxToppings} toppings`
   }
   return false
 }
 
-export const validateCartItems = (items: CartItem[]): string | false => {
-  if (items.length === 0) {
+export const validateCartItems = (items?: CartItem[]): string | false => {
+  if (!items || items.length === 0) {
     return "Your cart is empty"
   }
 
+  if (items.length > STORE_CONFIG.validation.maxItems) {
+    return `You can only have up to ${STORE_CONFIG.validation.maxItems} items in your cart`
+  }
+
   const validationMap: Record<PRODUCT_TYPE, (item: CartItem) => string | false> = {
-    pizza: (item) => {
+    [PRODUCT_TYPE.PIZZA]: (item) => {
       const pizzaItem = item as CartItem & { productType: PRODUCT_TYPE.PIZZA }
       const sizeError = validateSize(pizzaItem.pizzaSize)
       if (sizeError) {
@@ -53,7 +57,7 @@ export const validateCartItems = (items: CartItem[]): string | false => {
       }
       return false
     },
-    drink: () => {
+    [PRODUCT_TYPE.DRINK]: () => {
       return false
     },
   }

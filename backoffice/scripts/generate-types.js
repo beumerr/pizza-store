@@ -3,12 +3,12 @@ const dotenv = require("dotenv")
 
 dotenv.config()
 
-const { DIRECTUS_URL, DIRECTUS_EMAIL, DIRECTUS_PASSWORD } = process.env
+const { DIRECTUS_URL, DIRECTUS_TOKEN } = process.env
 
 // todo: --makeRequired=false breaks type generation on m2m fields
 // @see https://github.com/StephenGunn/directus-typeforge/issues/10
 // @see https://trello.com/c/EdqjUVzp/17-refactor-pickoptional-type-wait-for-resonse-on-issue
-const command = `npx directus-typeforge --host ${DIRECTUS_URL} --email ${DIRECTUS_EMAIL} --password ${DIRECTUS_PASSWORD} --outFile ../shared/util/directus-types.ts`
+const command = `npx directus-typeforge --host ${DIRECTUS_URL} --token ${DIRECTUS_TOKEN} --outFile ../shared/util/directus-types.ts`
 
 exec(command, (error, stdout) => {
   if (error) {

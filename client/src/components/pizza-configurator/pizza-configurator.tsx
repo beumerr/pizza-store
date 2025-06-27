@@ -8,7 +8,7 @@ import PriceDisplay from "./pizza-price-display"
 import { useState, useMemo } from "react"
 import { useCartStore } from "stores/cart"
 import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
-import { PIZZA_CONFIG } from "shared/cfg/pizza-config"
+import { STORE_CONFIG } from "shared/cfg/store-config"
 import { PRODUCT_TYPE } from "shared/util/types"
 
 import type { TSize, TTopping, TPizza } from "shared/util/types"
@@ -39,9 +39,9 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
   const handleToppingToggle = (topping: TTopping) => {
     if (
       !selectedToppings.some((t) => t.id === topping.id) &&
-      selectedToppings.length >= PIZZA_CONFIG.validation.maxToppings
+      selectedToppings.length >= STORE_CONFIG.validation.maxToppings
     ) {
-      alert(`You can only select up to ${PIZZA_CONFIG.validation.maxToppings} toppings.`)
+      alert(`You can only select up to ${STORE_CONFIG.validation.maxToppings} toppings.`)
       return
     }
 
@@ -107,13 +107,13 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
         />
       </div>
 
-      {selectedToppings.length < PIZZA_CONFIG.toppings.maxFree && (
+      {selectedToppings.length < STORE_CONFIG.toppings.maxFree && (
         <div className={style.info}>
           <span>
             Select{" "}
-            <i>{Math.max(0, PIZZA_CONFIG.toppings.maxFree - selectedToppings.length)}</i>{" "}
+            <i>{Math.max(0, STORE_CONFIG.toppings.maxFree - selectedToppings.length)}</i>{" "}
             more free topping
-            {selectedToppings.length === PIZZA_CONFIG.toppings.maxFree - 1 ? "" : "s"}
+            {selectedToppings.length === STORE_CONFIG.toppings.maxFree - 1 ? "" : "s"}
           </span>
         </div>
       )}

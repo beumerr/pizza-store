@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo } from "react"
-import { PIZZA_CONFIG, ToppingSize } from "shared/cfg/pizza-config"
+import { STORE_CONFIG, ToppingSize } from "shared/cfg/store-config"
 
 import type { TSize, TTopping } from "stores/cart"
 
@@ -19,14 +19,14 @@ export const usePizzaCanvas = ({
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || ""
 
   const pizzaDiameter = useMemo(() => {
-    if (!selectedSize) return PIZZA_CONFIG.canvas.width * 0.8
+    if (!selectedSize) return STORE_CONFIG.canvas.width * 0.8
 
     const allSizes = sizes.map((s) => parseInt(s.sizeDiameter))
     const minSize = Math.min(...allSizes)
     const maxSize = Math.max(...allSizes)
 
-    const maxDiameter = PIZZA_CONFIG.canvas.width * 0.9
-    const minDiameter = PIZZA_CONFIG.canvas.width * 0.5
+    const maxDiameter = STORE_CONFIG.canvas.width * 0.9
+    const minDiameter = STORE_CONFIG.canvas.width * 0.5
 
     const sizeNum = parseInt(selectedSize.sizeDiameter)
     const normalized = (sizeNum - minSize) / (maxSize - minSize)
@@ -47,7 +47,7 @@ export const usePizzaCanvas = ({
       try {
         let baseImg = imageCache.current.get("base")
         if (!baseImg) {
-          baseImg = await loadSVGFromDirectus(PIZZA_CONFIG.basePizzaSvgId, directusUrl)
+          baseImg = await loadSVGFromDirectus(STORE_CONFIG.basePizzaSvgId, directusUrl)
           imageCache.current.set("base", baseImg)
         }
 
@@ -102,8 +102,8 @@ export const generateToppingPositions = (
   toppingSize: ToppingSize,
   pizzaDiameter: number
 ): ToppingPosition[] => {
-  const config = PIZZA_CONFIG.toppings[toppingSize]
-  const distribution = PIZZA_CONFIG.distribution
+  const config = STORE_CONFIG.toppings[toppingSize]
+  const distribution = STORE_CONFIG.distribution
 
   if (toppingSize === "large") {
     if (!("scale" in config)) {
@@ -126,7 +126,7 @@ export const generateToppingPositions = (
 
   const positions: ToppingPosition[] = []
   const count = config.count
-  const radius = pizzaDiameter / 2 - PIZZA_CONFIG.canvas.crustOffset
+  const radius = pizzaDiameter / 2 - STORE_CONFIG.canvas.crustOffset
 
   for (let i = 0; i < count; i++) {
     const angle = Math.random() * Math.PI * 2

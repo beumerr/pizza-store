@@ -1,4 +1,4 @@
-export interface PizzaConfig {
+export interface StoreConfig {
   canvas: {
     width: number
     height: number
@@ -26,11 +26,12 @@ export interface PizzaConfig {
   validation: {
     maxToppings: number
     minToppings: number
+    maxItems: number
   }
   basePizzaSvgId: string
 }
 
-export const PIZZA_CONFIG: PizzaConfig = {
+export const STORE_CONFIG: StoreConfig = {
   canvas: {
     width: 600,
     height: 600,
@@ -58,6 +59,7 @@ export const PIZZA_CONFIG: PizzaConfig = {
   validation: {
     maxToppings: 6,
     minToppings: 2,
+    maxItems: 50,
   },
   basePizzaSvgId: "e2db0cdc-382a-4d40-b80a-24bba5c56ecf",
 }

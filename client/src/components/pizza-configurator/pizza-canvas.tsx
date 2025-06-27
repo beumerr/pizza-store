@@ -1,5 +1,5 @@
 import { usePizzaCanvas } from "@/components/pizza-configurator/pizza-renderer"
-import { PIZZA_CONFIG } from "shared/cfg/pizza-config"
+import { STORE_CONFIG } from "shared/cfg/store-config"
 
 import type { TSize, TTopping } from "stores/cart"
 
@@ -24,8 +24,8 @@ export default function PizzaCanvas({
     <div className="PizzaCanvas">
       <canvas
         ref={canvasRef}
-        width={PIZZA_CONFIG.canvas.width}
-        height={PIZZA_CONFIG.canvas.height}
+        width={STORE_CONFIG.canvas.width}
+        height={STORE_CONFIG.canvas.height}
       />
     </div>
   )

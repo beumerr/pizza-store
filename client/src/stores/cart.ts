@@ -156,14 +156,40 @@ export const useCartStore = create<CartStore>()(
           })
         },
         submitOrder: async () => {
-          const error = get().isInvalidOrder()
+          const state = get()
+          const error = state.isInvalidOrder()
           if (error) {
-            alert(error)
+            state.setError(error)
             return
           }
-          // todo #US_8
-          alert("Order submitted successfully!") // todo #US_9
-          get().clearCart()
+
+          try {
+            const createOrder = await fetch(
+              `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/order/create`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  cartItems: get().items,
+                }),
+              }
+            )
+
+            const json = await createOrder.json()
+
+            if (json?.error || !createOrder.ok) {
+              state.setError(json?.error || "Failed to create order")
+              return
+            }
+
+            alert("Order submitted successfully!")
+            get().clearCart()
+          } catch (error) {
+            console.error("Error while submitting order", error)
+            state.setError("Failed to submit order")
+          }
         },
         isInvalidOrder: () => {
           const items = get().items

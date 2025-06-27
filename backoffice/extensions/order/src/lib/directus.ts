@@ -1,4 +1,7 @@
-import { createDirectusClient, createDirectusAPI } from "shared/lib/directus"
+import dotenv from "dotenv"
+import { createDirectusClient, createDirectusAPI } from "../shared/lib/directus"
+
+dotenv.config()
 
 const DIRECTUS_URL = process.env.DIRECTUS_URL
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN
