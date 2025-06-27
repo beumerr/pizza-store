@@ -21,7 +21,9 @@ export default function SizeSelector({
         value={selectedSize?.id || ""}
         onChange={(e) => {
           const size = sizes.find((s) => s.id === parseInt(e.target.value))
-          if (size) onSizeChange(size)
+          if (size) {
+            onSizeChange(size)
+          }
         }}>
         {!selectedSize && <option value="">Choose format</option>}
         {sizes.map((size) => (

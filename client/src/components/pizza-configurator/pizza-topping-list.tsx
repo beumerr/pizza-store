@@ -6,6 +6,7 @@ import { formatPrice } from "shared/util/util"
 import type { TTopping, TSize } from "shared/util/types"
 
 import style from "./pizza-configurator.module.scss"
+
 interface ToppingsListProps {
   toppings: TTopping[]
   selectedToppings: TTopping[]
@@ -58,11 +59,7 @@ export default function ToppingsList({
             <span className={style.indicator}></span>
             <span className={style.name}>{topping.name}</span>
             <span className={style.price}>
-              {isFree ? (
-                <span className={style.free}>Free</span>
-              ) : (
-                <>{formatPrice(price)}</>
-              )}
+              {isFree ? <span className={style.free}>Free</span> : formatPrice(price)}
             </span>
           </label>
         )

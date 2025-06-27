@@ -1,6 +1,6 @@
 .CartSummary {
-  padding: clamp(20px, 2vw, 30px) clamp(30px, 2.5vw, 40px);
-  border: 1px solid rgba(var(--purpleRGB), 0.2);
+  padding: var(--boxPaddingLarge);
+  border: var(--borderColor);
   border-radius: var(--borderLarge);
   $spacer: clamp(10px, 1vw, 20px);
 
@@ -54,7 +54,7 @@
 
   .select {
     border-radius: var(--borderSmall);
-    border: 1px solid rgba(var(--purpleRGB), 0.2);
+    border: var(--borderColor);
     padding: 10px 15px;
     width: 100%;
     background-color: var(--creme);

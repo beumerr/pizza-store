@@ -1,7 +1,7 @@
 import { usePizzaCanvas } from "@/components/pizza-configurator/pizza-renderer"
 import { STORE_CONFIG } from "shared/cfg/store-config"
 
-import type { TSize, TTopping } from "stores/cart"
+import type { TSize, TTopping } from "shared/util/types"
 
 interface PizzaCanvasProps {
   sizes: TSize[]

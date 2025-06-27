@@ -1,45 +1,27 @@
 import React from "react"
 import PizzaConfigurator from "./pizza-configurator"
 
-import { getPizzaConfiguratorData } from "@/actions/actions"
+import { TSize, TTopping } from "shared/util/types"
 
 import style from "./pizza-configurator.module.scss"
 
-export default async function PizzaWrapper() {
-  const { data, error } = await getPizzaConfiguratorData()
-  const { sizes, toppings } = data || {}
+export interface PizzaWrapperProps {
+  sizes?: TSize[]
+  toppings?: TTopping[]
+}
 
+export default async function PizzaWrapper({ sizes, toppings }: PizzaWrapperProps) {
   const Wrapper = ({ children }: React.PropsWithChildren) => {
     return <div className={style.PizzaWrapper}>{children}</div>
   }
 
-  if (error) {
-    return (
-      <Wrapper>
-        <span className={style.error}>Error loading pizza configurator</span>
-      </Wrapper>
-    )
-  }
-
-  if (!sizes?.data) {
-    return (
-      <Wrapper>
-        <span className={style.error}>No sizes available</span>
-      </Wrapper>
-    )
-  }
-
-  if (!toppings?.data) {
-    return (
-      <Wrapper>
-        <span className={style.error}>No toppings available</span>
-      </Wrapper>
-    )
+  if (!sizes?.length || !toppings?.length) {
+    return null
   }
 
   return (
     <Wrapper>
-      <PizzaConfigurator sizes={sizes.data} toppings={toppings.data} />
+      <PizzaConfigurator sizes={sizes} toppings={toppings} />
     </Wrapper>
   )
 }

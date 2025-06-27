@@ -1,0 +1,132 @@
+.Tile {
+  border-radius: var(--borderMedium);
+  background-color: var(--white);
+  border-bottom: 2px solid var(--greyLight);
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    width: 100%;
+    aspect-ratio: 1 / 0.6;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-top-left-radius: var(--borderMedium);
+      border-top-right-radius: var(--borderMedium);
+    }
+  }
+
+  .body {
+    padding: 20px;
+    flex: 1;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      font-family: var(--mont);
+      font-weight: 900;
+      font-size: var(--fontSmall);
+      color: var(--purple);
+      line-height: 100%;
+    }
+
+    p {
+      font-family: var(--mont);
+      font-weight: 600;
+      font-size: var(--fontSmall);
+      color: var(--purpleLight);
+    }
+
+    .controls {
+      margin-top: 10px;
+      padding: 0 5px;
+    }
+  }
+}
+
+.Controls {
+  display: flex;
+  flex-direction: column;
+
+  .row + .row {
+    margin-top: 4px;
+  }
+  .row {
+    display: flex;
+    gap: 5px;
+
+    .select {
+      position: relative;
+      width: 100%;
+
+      &:after {
+        content: "";
+        position: absolute;
+        right: 7px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        transform: rotate(90deg);
+        transform-origin: center 0;
+        background: url("/assets/img/svg/chevron.svg") no-repeat center center;
+        filter: var(--purpleFilter);
+        opacity: 0.5;
+        transition: opacity var(--transition0) 0.3s;
+        pointer-events: none;
+      }
+
+      &:hover {
+        &:after {
+          opacity: 1;
+        }
+      }
+
+      select {
+        border: 1px dashed var(--purpleLight);
+        border-radius: var(--borderMedium);
+        background: transparent;
+        outline: none;
+        padding: 5px 10px;
+        font-family: var(--mont);
+        font-weight: 600;
+        font-size: var(--fontSmall);
+        color: var(--purple);
+        appearance: none;
+        width: 100%;
+        cursor: pointer;
+        transition: all var(--transition0) 0.3s;
+
+        option {
+          background: var(--creme);
+        }
+        &:focus,
+        &:hover {
+          border-color: var(--purple);
+        }
+      }
+    }
+
+    .price {
+      padding: 5px 20px;
+      font-family: var(--mont);
+      font-weight: 600;
+      font-size: var(--fontSmall);
+      color: var(--purple);
+      background: rgba(var(--purpleRGB), 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: var(--borderMedium);
+      flex: 1;
+    }
+
+    button {
+      flex: 1;
+    }
+  }
+}

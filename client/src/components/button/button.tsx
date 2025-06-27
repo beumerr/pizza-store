@@ -7,7 +7,7 @@ export interface ButtonProps {
   onClick: () => void
   children: React.ReactNode
   className?: string
-  size: "small" | "medium" | "large"
+  size: "small" | "medium" | "large" | "custom"
   color: "green" | "orange"
   disabled?: boolean
 }

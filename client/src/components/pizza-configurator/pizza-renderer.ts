@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from "react"
 import { STORE_CONFIG, ToppingSize } from "shared/cfg/store-config"
 
-import type { TSize, TTopping } from "stores/cart"
+import type { TSize, TTopping } from "shared/util/types"
 
 export interface UsePizzaCanvasProps {
   sizes: TSize[]

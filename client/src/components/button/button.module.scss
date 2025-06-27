@@ -21,11 +21,15 @@
   &.orange {
     background-color: var(--orange);
     border-bottom-color: var(--orangeDark);
+
+    &:hover {
+      background-color: var(--orangeLight);
+    }
   }
 
   &.small {
     font-size: var(--fontSmall);
-    padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 18px);
+    padding: clamp(6px, 1vw, 8px) clamp(7px, 1.5vw, 16px);
   }
 
   &.medium {

@@ -1,0 +1,28 @@
+.Showcase {
+  .item {
+    .title {
+      font-family: var(--magic-bubble);
+      color: var(--red);
+      font-size: clamp(30px, 2.5vw, 50px);
+      margin-bottom: clamp(10px, 2vw, 20px);
+      padding-left: clamp(10px, 2vw, 20px);
+    }
+    .rows {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+
+      @media (max-width: 1700px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @media (max-width: 1320px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
+  .item + .item {
+    margin-top: 5vh;
+  }
+}

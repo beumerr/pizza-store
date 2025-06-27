@@ -1,12 +1,18 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { getDrinks, getShowcases } from "actions/actions"
+import {
+  getDrinks,
+  getPizzaConfiguratorData,
+  getShowcases,
+  getSizes,
+  getToppings,
+} from "actions/actions"
 
-import type { ActionResult } from "actions/actions"
-import type { Drink, Showcase } from "util/directus-types"
+import type { ActionResult, PizzaConfiguratorData } from "actions/actions"
+import type { Drink, Showcase, Size, Topping } from "util/directus-types"
 
-type ServerAction<T = any, Args extends any[] = any[]> = (
+type ServerAction<T, Args extends any[] = any[]> = (
   ...args: Args
 ) => Promise<ActionResult<T>>
 
@@ -71,4 +77,20 @@ export function useServerAction<T, Args extends any[] = any[]>(
 
 export function useDrinks() {
   return useServerAction<Drink[]>(getDrinks)
+}
+
+export function useShowcases() {
+  return useServerAction<Showcase[]>(getShowcases)
+}
+
+export function usePizzaConfiguratorData() {
+  return useServerAction<PizzaConfiguratorData>(getPizzaConfiguratorData)
+}
+
+export function useSizes() {
+  return useServerAction<Size[]>(getSizes)
+}
+
+export function useToppings() {
+  return useServerAction<Topping[]>(getToppings)
 }

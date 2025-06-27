@@ -1,0 +1,30 @@
+.PizzaButton {
+  position: relative;
+  padding: var(--boxPaddingLarge);
+  border: var(--borderColor);
+  border-radius: var(--borderLarge);
+
+  img {
+    position: absolute;
+    right: 60px;
+    width: 89px;
+    height: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  button {
+    background-color: var(--orange);
+    padding: 15px 25px;
+    border-radius: 100px;
+    font-family: var(--mont);
+    font-weight: 900;
+    color: var(--white);
+    font-size: var(--fontMedium);
+    border-bottom: 2px solid var(--orangeDark);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.2s var(--transition0);
+  }
+}

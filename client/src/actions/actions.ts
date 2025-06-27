@@ -29,11 +29,17 @@ export async function getShowcases(): Promise<ActionResult<Showcase[]>> {
         "title",
         {
           pizzas: [
-            "*",
             {
               pizzas_id: [
+                "id",
+                "name",
+                "image",
                 {
-                  toppings: ["*"],
+                  toppings: [
+                    {
+                      toppings_id: ["id", "name", "priceBase", "priceCm2"],
+                    },
+                  ],
                 },
               ],
             },

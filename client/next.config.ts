@@ -4,6 +4,9 @@ import type { NextConfig } from "next"
 import type { Compiler, Compilation } from "webpack"
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: ["127.0.0.1"],
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.watchOptions = {

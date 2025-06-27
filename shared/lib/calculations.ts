@@ -1,5 +1,5 @@
 import type { Size, Topping } from "../util/directus-types"
-import type { PickOptional, OptionalKeys } from "../util/types"
+import type { TSize, TTopping } from "../util/types"
 
 export interface PizzaPriceBreakdown {
   basePrice: number
@@ -7,17 +7,15 @@ export interface PizzaPriceBreakdown {
   total: number
 }
 
-export const calculatePizzaBasePrice = (
-  size: PickOptional<Size, OptionalKeys>
-): number => {
+export const calculatePizzaBasePrice = (size: TSize): number => {
   const sizeArea = Math.PI * Math.pow(parseInt(size.sizeDiameter) / 2, 2)
   const basePrice = size.priceCm2 * sizeArea
   return Math.round(basePrice * 100) / 100
 }
 
 export const calculatePizzaPriceBreakdown = (
-  size: PickOptional<Size, OptionalKeys>,
-  toppings?: PickOptional<Topping, OptionalKeys>[]
+  size: TSize,
+  toppings?: TTopping[]
 ): PizzaPriceBreakdown => {
   const basePrice = calculatePizzaBasePrice(size)
   const toppingsPrice = calculatePizzaToppingsPrice(size, toppings)
@@ -26,18 +24,15 @@ export const calculatePizzaPriceBreakdown = (
   return { basePrice, toppingsPrice, total }
 }
 
-export const calculateSingleToppingPrice = (
-  size: PickOptional<Size, OptionalKeys>,
-  topping: PickOptional<Topping, OptionalKeys>
-): number => {
+export const calculateSingleToppingPrice = (size: TSize, topping: TTopping): number => {
   const sizeArea = Math.PI * Math.pow(parseInt(size.sizeDiameter) / 2, 2)
   const price = topping.priceBase + topping.priceCm2 * sizeArea
   return Math.round(price * 100) / 100
 }
 
 export const calculatePizzaToppingsPrice = (
-  size: PickOptional<Size, OptionalKeys>,
-  toppings?: PickOptional<Topping, OptionalKeys>[]
+  size: TSize,
+  toppings?: TTopping[]
 ): number => {
   if (!toppings || toppings.length === 0) return 0
 

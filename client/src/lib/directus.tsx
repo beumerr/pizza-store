@@ -14,17 +14,4 @@ if (!DIRECTUS_TOKEN) {
 const client = createDirectusClient(DIRECTUS_URL, DIRECTUS_TOKEN)
 const directus = createDirectusAPI(client)
 
-export const {
-  readSingleton,
-  readItem,
-  readItems,
-  createItem,
-  createItems,
-  updateSingleton,
-  updateItem,
-  updateItems,
-  deleteItem,
-  deleteItems,
-} = directus
-
 export default directus

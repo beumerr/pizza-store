@@ -1,0 +1,50 @@
+$sidebarWidth: clamp(200px, 30vw, 400px);
+
+.container {
+  padding: 10vh 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .slider {
+    width: clamp(700px, 50vw, 1030px);
+
+    @media (max-width: 1350px) {
+      width: calc(80vw - $sidebarWidth);
+    }
+
+    @media (max-width: 1000px) {
+      width: calc(90vw - $sidebarWidth);
+    }
+
+    @media (max-width: 950px) {
+      width: 80vw;
+    }
+
+    @media (max-width: 700px) {
+      width: 100vw;
+    }
+  }
+
+  @media (max-width: 950px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .sidebar {
+    width: clamp(200px, 30vw, 400px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 1vw, 20px);
+
+    @media (max-width: 950px) {
+      padding: 0 40px;
+      width: 80vw;
+    }
+
+    @media (max-width: 700px) {
+      width: 100vw;
+    }
+  }
+}

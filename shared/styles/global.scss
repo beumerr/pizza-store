@@ -29,6 +29,8 @@
   --orangeRGB: 255, 150, 47;
   --orangeDark: #8e1618;
   --orangeDarkRGB: 142, 22, 24;
+  --orangeLight: #ffb26c;
+  --orangeLightRGB: 255, 178, 108;
 
   --pink: #fd9f9f;
   --pinkRGB: 253, 159, 159;
@@ -43,6 +45,9 @@
   --borderSmall: 4px;
   --borderMedium: 8px;
   --borderLarge: 16px;
+  --borderColor: 1px solid rgba(var(--purpleRGB), 0.2);
+
+  --boxPaddingLarge: clamp(20px, 2vw, 30px) clamp(30px, 2.5vw, 40px);
 
   --fontSmall: clamp(10px, 1.2vw, 12px);
   --fontMedium: clamp(12px, 1.4vw, 16px);
@@ -67,7 +72,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--creme);
-  padding: 100px;
 }
 
 img,

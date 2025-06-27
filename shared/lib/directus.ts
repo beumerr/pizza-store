@@ -69,7 +69,6 @@ export const createDirectusClient = (url: string, token: string): DirectusInstan
     )
 }
 
-// Factory function to create API methods with a client
 export const createDirectusAPI = (client: DirectusInstance) => {
   return {
     readSingleton: async <

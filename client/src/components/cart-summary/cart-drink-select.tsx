@@ -1,27 +1,16 @@
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { cs, formatPrice } from "shared/util/util"
 import { useCartStore } from "stores/cart"
 import { PRODUCT_TYPE, TDrink } from "shared/util/types"
-import { useDrinks } from "@/hooks/use-action"
 
 import style from "./cart-summary.module.scss"
+export interface CartDrinkSelectProps {
+  drinks: TDrink[]
+}
 
-export default function CartDrinkSelect() {
-  const { execute, loading, data, error } = useDrinks()
+export default function CartDrinkSelect({ drinks }: CartDrinkSelectProps) {
   const { addCartItem, setError } = useCartStore()
   const selectRef = useRef<HTMLSelectElement>(null)
-
-  useEffect(() => {
-    const fetchDrinks = async () => {
-      try {
-        await execute()
-      } catch (error) {
-        console.error("Failed to fetch drinks:", error)
-      }
-    }
-
-    fetchDrinks()
-  }, [])
 
   const handleDrinkChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     selectRef.current?.blur()
@@ -29,7 +18,7 @@ export default function CartDrinkSelect() {
     const drinkId = parseInt(event.target.value)
     if (!drinkId) return
 
-    const drink: TDrink | undefined = data?.find((d) => d.id === drinkId)
+    const drink: TDrink | undefined = drinks?.find((d) => d.id === drinkId)
     if (!drink) {
       setError("Drink not found")
       return
@@ -43,16 +32,14 @@ export default function CartDrinkSelect() {
 
   return (
     <div className={cs(style.CartDrinkSelect)}>
-      {loading && <span className={style.select}>Loading drinks...</span>}
-      {error && <span className={style.select}>No drinks available</span>}
-      {data && (
+      {!!drinks.length && (
         <select
           className={style.select}
           ref={selectRef}
           value="0"
           onChange={handleDrinkChange}>
           <option value="0">Select drink</option>
-          {data?.map((drink) => (
+          {drinks.map((drink) => (
             <option key={drink.id} value={drink.id}>
               {drink.name} - {formatPrice(drink.price)}
             </option>

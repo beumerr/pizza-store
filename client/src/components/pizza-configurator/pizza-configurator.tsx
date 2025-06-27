@@ -110,10 +110,12 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
       {selectedToppings.length < STORE_CONFIG.toppings.maxFree && (
         <div className={style.info}>
           <span>
-            Select{" "}
-            <i>{Math.max(0, STORE_CONFIG.toppings.maxFree - selectedToppings.length)}</i>{" "}
-            more free topping
-            {selectedToppings.length === STORE_CONFIG.toppings.maxFree - 1 ? "" : "s"}
+            <span>Select</span>
+            <i>{Math.max(0, STORE_CONFIG.toppings.maxFree - selectedToppings.length)}</i>
+            <span>
+              more free topping
+              {selectedToppings.length === STORE_CONFIG.toppings.maxFree - 1 ? "" : "s"}
+            </span>
           </span>
         </div>
       )}
