@@ -31,6 +31,6 @@ async function copyDirectory(source, destination) {
 }
 
 // Copy shared directories
-copyDirectory("./shared/util", "./extensions/order/src/shared/util")
-copyDirectory("./shared/lib", "./extensions/order/src/shared/lib")
-copyDirectory("./shared/cfg", "./extensions/order/src/shared/cfg")
+copyDirectory("../shared/util", "./extensions/order/src/shared/util")
+copyDirectory("../shared/lib", "./extensions/order/src/shared/lib")
+copyDirectory("../shared/cfg", "./extensions/order/src/shared/cfg")
