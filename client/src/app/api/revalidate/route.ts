@@ -1,15 +1,16 @@
-// app/api/revalidate/route.ts
 import { NextRequest, NextResponse } from "next/server"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 export const runtime = "nodejs"
 
 const SECRET = process.env.REVALIDATE_SECRET
+
 if (!SECRET) throw new Error("Missing REVALIDATE_SECRET env var")
 
-// 10 sec debounce on revalidate
-const DEBOUNCE_MS = 10 * 1000
-let debounceTimer: NodeJS.Timeout | null = null
+// 10 sec throttle on revalidate
+const THROTTLE_MS = 10 * 1000
+let lastExecutionTime = 0
+let isThrottled = false
 
 export async function POST(req: NextRequest) {
   let body: { secret?: string }
@@ -26,21 +27,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Invalid secret" }, { status: 401 })
   }
 
-  if (debounceTimer) {
-    clearTimeout(debounceTimer)
-  }
+  const now = Date.now()
 
-  debounceTimer = setTimeout(async () => {
+  if (now - lastExecutionTime >= THROTTLE_MS) {
+    // Execute immediately if enough time has passed
+    lastExecutionTime = now
+    isThrottled = false
+
     try {
-      console.log(`Revalidating "/"`)
-      revalidatePath(`/`)
+      console.log("Revalidate `api` tag and `/` path")
+      revalidatePath("/")
+      revalidateTag("api")
+      return NextResponse.json({
+        executed: true,
+        message: "Revalidation executed immediately",
+      })
     } catch (err) {
-      console.error(`Error revalidating "/"`, err)
+      console.error("Revalidate error", err)
+      return NextResponse.json({ message: "Revalidation failed" }, { status: 500 })
     }
-  }, DEBOUNCE_MS)
-
-  return NextResponse.json({
-    scheduled: true,
-    message: `Revalidation will fire after ${DEBOUNCE_MS}ms debounce timer`,
-  })
+  } else {
+    const timeUntilNext = THROTTLE_MS - (now - lastExecutionTime)
+    return NextResponse.json({
+      throttled: true,
+      message: `Revalidation throttled. Next execution allowed in ${timeUntilNext}ms`,
+    })
+  }
 }
