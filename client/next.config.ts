@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
       }
     }
 
+    config.module.rules.push({
+      test: /\.(js|jsx|ts|tsx)$/,
+      include: [require("path").resolve(__dirname, "shared")],
+    })
+
     config.plugins.push({
       apply(compiler: Compiler) {
         const extraWatchPath = path.resolve(__dirname, "../shared")
