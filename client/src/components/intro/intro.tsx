@@ -42,12 +42,11 @@ export function IntroProvider({ children }: IntroProviderProps) {
 export default function Intro() {
   const { hide } = useIntro()
 
-  useEffect(() => {
-    if (process.env.DISABLE_INTRO === "TRUE") {
-      hide()
-      return
-    }
+  if (process.env.NEXT_PUBLIC_DISABLE_INTRO == "true") {
+    return null
+  }
 
+  useEffect(() => {
     document.body.style.overflow = "hidden"
 
     return () => {
