@@ -53,7 +53,7 @@ export default function Intro() {
     return () => {
       document.body.style.overflow = ""
     }
-  }, [])
+  }, [hide])
 
   return (
     <div className={style.Intro} data-intro>

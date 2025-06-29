@@ -1,0 +1,128 @@
+.toastWrapper {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 500px;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  mask-image: linear-gradient(to top, #000 65%, transparent 90%);
+
+  .Toast {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    border-radius: var(--borderMedium);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+    pointer-events: auto;
+    height: 48px;
+    backdrop-filter: blur(11px);
+    gap: 10px;
+    min-width: 270px;
+    text-align: left;
+    border: 0;
+    cursor: pointer;
+    transition: opacity var(--transition0) 0.3s;
+    pointer-events: all;
+    user-select: none;
+
+    &:hover {
+      opacity: 1 !important;
+      color: white !important;
+    }
+
+    &.toast-info {
+      background: rgba(82, 137, 164, 0.2);
+      .text {
+        color: rgba(91, 166, 203, 1);
+      }
+
+      .icon {
+        border-color: rgba(91, 166, 203, 1);
+      }
+      text {
+        fill: rgba(91, 166, 203, 1);
+      }
+    }
+
+    &.toast-success {
+      background: rgba(76, 200, 149, 0.2);
+
+      .text {
+        color: rgba(76, 200, 149, 1);
+      }
+
+      .icon {
+        border-color: rgba(76, 200, 149, 1);
+      }
+      polyline {
+        stroke: rgba(76, 200, 149, 1);
+      }
+    }
+
+    &.toast-error {
+      background: rgba(193, 88, 88, 0.2);
+
+      .text {
+        color: rgba(193, 88, 88, 1);
+      }
+
+      .icon {
+        border-color: rgba(193, 88, 88, 1);
+      }
+
+      svg {
+        width: 14px;
+      }
+
+      line {
+        stroke: rgba(193, 88, 88, 1);
+      }
+    }
+
+    &.toast-warning {
+      background: rgba(249, 208, 42, 0.38);
+
+      .text {
+        color: rgba(249, 208, 42, 1);
+      }
+
+      .icon {
+        border-color: rgba(249, 208, 42, 1);
+      }
+
+      circle:last-child {
+        fill: rgba(249, 208, 42, 1);
+      }
+
+      line {
+        stroke: rgba(249, 208, 42, 1);
+      }
+    }
+
+    .text {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-family: var(--mont);
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+
+      svg {
+        fill: transparent;
+      }
+    }
+  }
+}

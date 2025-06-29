@@ -7,9 +7,10 @@ import PriceDisplay from "./pizza-price-display"
 
 import { useState, useMemo } from "react"
 import { useCartStore } from "stores/cart"
-import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
+import { useToastStore } from "stores/toast"
 import { STORE_CONFIG } from "shared/cfg/store-config"
 import { PRODUCT_TYPE } from "shared/util/types"
+import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
 
 import type { TSize, TTopping, TPizza } from "shared/util/types"
 
@@ -26,6 +27,7 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
   const [selectedToppings, setSelectedToppings] = useState<TTopping[]>([])
 
   const { addCartItem } = useCartStore()
+  const { addToast } = useToastStore()
 
   const visibleToppings = useMemo(() => toppings.filter((t) => !t.isHidden), [toppings])
   const priceBreakdown = useMemo(() => {
@@ -41,7 +43,11 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
       !selectedToppings.some((t) => t.id === topping.id) &&
       selectedToppings.length >= STORE_CONFIG.validation.maxToppings
     ) {
-      alert(`You can only select up to ${STORE_CONFIG.validation.maxToppings} toppings.`)
+      addToast({
+        type: "error",
+        text: `You can only select up to ${STORE_CONFIG.validation.maxToppings} toppings.`,
+      })
+
       return
     }
 

@@ -36,7 +36,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "shared/**/*",
-    "src/lib/directus.tsx"
+    "src/lib/directus.tsx",
+    "src/components/toast/toast-icons.tsx"
   ],
   "exclude": ["node_modules"]
 }

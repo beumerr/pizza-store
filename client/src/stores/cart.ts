@@ -2,7 +2,7 @@ import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
 import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
 import { fetchDirectus } from "shared/util/util"
-
+import { addToast } from "./toast"
 import { PRODUCT_TYPE } from "shared/util/types"
 import { validateCartItems, validatePizza } from "shared/lib/validations"
 
@@ -51,8 +51,10 @@ export const useCartStore = create<CartStore>()(
           return get().items
         },
         setError: (error: string) => {
-          alert(error)
-          // todo improve visual feedback
+          addToast({
+            type: "error",
+            text: error,
+          })
         },
         addCartItem: (productType: PRODUCT_TYPE, item: PizzaCartItem | DrinkCartItem) => {
           const state = get()
@@ -62,7 +64,7 @@ export const useCartStore = create<CartStore>()(
             const error = validatePizza(pizza.pizzaSize, pizza.pizzaToppings)
 
             if (error) {
-              alert(error)
+              state.setError(error)
               return
             }
           }
@@ -111,6 +113,11 @@ export const useCartStore = create<CartStore>()(
             items: [...state.items, newItem],
           }))
 
+          addToast({
+            type: "success",
+            text: `${productType} added to cart`,
+          })
+
           state.recalculatePrice()
         },
         removeItem: (itemId: string) => {
@@ -124,6 +131,11 @@ export const useCartStore = create<CartStore>()(
           set((state) => ({
             items: state.items.filter((item) => item.uid !== itemId),
           }))
+
+          addToast({
+            type: "success",
+            text: "Item removed from cart",
+          })
 
           state.recalculatePrice()
         },
@@ -149,6 +161,11 @@ export const useCartStore = create<CartStore>()(
             const coupon = validateCoupon.coupon as Coupon
             set({ coupon })
 
+            addToast({
+              type: "success",
+              text: `${coupon.discountPercentage}% discount applied!`,
+            })
+
             state.recalculatePrice()
           } catch (error) {
             const err =
@@ -165,6 +182,12 @@ export const useCartStore = create<CartStore>()(
           }
 
           set({ coupon: null })
+
+          addToast({
+            type: "success",
+            text: `Coupon removed`,
+          })
+
           state.recalculatePrice()
         },
         clearCart: () => {
@@ -212,7 +235,11 @@ export const useCartStore = create<CartStore>()(
               return
             }
 
-            alert("Order submitted successfully!")
+            addToast({
+              type: "success",
+              text: `You order has been placed!`,
+            })
+
             get().clearCart()
           } catch (error) {
             console.error("Error while submitting order", error)

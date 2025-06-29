@@ -92,3 +92,11 @@ export const getTitle = (item: PizzaCartItem | DrinkCartItem) => {
 
   return titleMap[item.productType]()
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const extendArray = (arr: any[], n: number) => {
+  if (!arr.length) return arr
+  if (n <= 0) throw new Error("n must be greater than 0")
+  while (arr.length < n) arr = arr.concat(arr.slice(0, n - arr.length))
+  return arr
+}

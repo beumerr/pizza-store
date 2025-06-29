@@ -1,8 +1,9 @@
-import style from "./pizza-configurator.module.scss"
 import Button from "../button/button"
 import Block from "../block/block"
 
 import { formatPrice } from "shared/util/util"
+
+import style from "./pizza-configurator.module.scss"
 
 interface PriceDisplayProps {
   basePrice: number
