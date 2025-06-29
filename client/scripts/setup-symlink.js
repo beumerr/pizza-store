@@ -33,4 +33,6 @@ createSymLink("../shared/styles", "./shared/styles", "junction")
 createSymLink("../shared/util", "./shared/util", "junction")
 createSymLink("../shared/lib", "./shared/lib", "junction")
 createSymLink("../shared/cfg", "./shared/cfg", "junction")
+createSymLink("../shared/tests", "./shared/tests", "junction")
+
 createSymLink("../shared/assets", "./public/assets", "junction")

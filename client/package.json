@@ -9,7 +9,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:shared": "cd ../shared && npm test",
+    "test:shared:run": "cd ../shared && npm run test:run",
+    "test:shared:coverage": "cd ../shared && npm run test:coverage"
   },
   "dependencies": {
     "@directus/sdk": "^19.1.0",
