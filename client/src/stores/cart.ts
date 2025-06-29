@@ -216,6 +216,7 @@ export const useCartStore = create<CartStore>()(
         submitOrder: async () => {
           const state = get()
           const error = state.isInvalidOrder()
+
           if (error) {
             state.setError(error)
             return
