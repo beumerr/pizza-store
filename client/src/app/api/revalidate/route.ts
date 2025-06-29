@@ -10,7 +10,6 @@ if (!SECRET) throw new Error("Missing REVALIDATE_SECRET env var")
 // 10 sec throttle on revalidate
 const THROTTLE_MS = 10 * 1000
 let lastExecutionTime = 0
-let isThrottled = false
 
 export async function POST(req: NextRequest) {
   let body: { secret?: string }
@@ -30,9 +29,7 @@ export async function POST(req: NextRequest) {
   const now = Date.now()
 
   if (now - lastExecutionTime >= THROTTLE_MS) {
-    // Execute immediately if enough time has passed
     lastExecutionTime = now
-    isThrottled = false
 
     try {
       console.log("Revalidate `api` tag and `/` path")
