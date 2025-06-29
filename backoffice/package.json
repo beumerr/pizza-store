@@ -6,6 +6,7 @@
     "predev": "node scripts/setup-copy.js && npm run install:extensions",
     "prebuild": "node scripts/setup-copy.js && npm run build:extensions",
     "prestart": "node scripts/setup-copy.js",
+    "copy": "node scripts/setup-copy.js",
     "dev": "concurrently \"npm run dev:extensions\" \"npm run dev:server\"",
     "dev:extensions": "npm run dev --prefix extensions/order",
     "dev:server": "npm run build --prefix extensions/order && npx directus start",
