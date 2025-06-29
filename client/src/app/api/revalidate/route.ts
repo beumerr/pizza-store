@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath, revalidateTag } from "next/cache"
 
-export const runtime = "nodejs"
-
 const SECRET = process.env.REVALIDATE_SECRET
 
 if (!SECRET) throw new Error("Missing REVALIDATE_SECRET env var")
