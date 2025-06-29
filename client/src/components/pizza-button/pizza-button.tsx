@@ -24,7 +24,7 @@ export default function PizzaButton({
   priority,
   children,
 }: PizzaButtonProps) {
-  const { scrollNext, selectedIndex } = onClick ? {} : useEmbla()
+  const { scrollNext, selectedIndex } = useEmbla()
 
   return (
     <div className={cs(style.PizzaButton, className)}>

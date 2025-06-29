@@ -42,7 +42,7 @@ export default function TileControls({ productType, product, sizes }: TileContro
     const productPrice = priceMap[productType]()
 
     return productPrice
-  }, [selectedSize, product])
+  }, [productType, selectedSize, product])
 
   const handleAddToCart = () => {
     if (productType === PRODUCT_TYPE.PIZZA && !selectedSize) {

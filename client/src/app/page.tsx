@@ -15,8 +15,8 @@ export default async function Home() {
   const toppings = await getToppings()
 
   return (
-    <IntroProvider>
-      <EmblaProvider>
+    <EmblaProvider>
+      <IntroProvider>
         <div className={style.container}>
           <EmblaSlider className={style.slider}>
             <PizzaWrapper sizes={sizes.data} toppings={toppings.data} />
@@ -27,7 +27,7 @@ export default async function Home() {
             <CartSummary drinks={drinks.data} />
           </div>
         </div>
-      </EmblaProvider>
-    </IntroProvider>
+      </IntroProvider>
+    </EmblaProvider>
   )
 }

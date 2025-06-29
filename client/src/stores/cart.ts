@@ -1,14 +1,13 @@
 import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
 import { calculatePizzaPriceBreakdown } from "shared/lib/calculations"
+import { fetchDirectus } from "shared/util/util"
 
 import { PRODUCT_TYPE } from "shared/util/types"
 import { validateCartItems, validatePizza } from "shared/lib/validations"
 
 import type { CartItem, DrinkCartItem, ItemPrice, PizzaCartItem } from "shared/util/types"
 import type { Coupon } from "util/directus-types"
-import { validate } from "webpack"
-import { fetchDirectus } from "shared/util/util"
 
 export interface CartState {
   items: CartItem[]

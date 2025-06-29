@@ -32,7 +32,7 @@ export const usePizzaCanvas = ({
     const normalized = (sizeNum - minSize) / (maxSize - minSize)
 
     return minDiameter + (maxDiameter - minDiameter) * normalized
-  }, [selectedSize])
+  }, [sizes, selectedSize])
 
   useEffect(() => {
     const canvas = canvasRef.current

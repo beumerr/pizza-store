@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     try {
       console.log(`Revalidating "/"`)
       revalidatePath(`/`)
-    } catch (err: any) {
+    } catch (err) {
       console.error(`Error revalidating "/"`, err)
     }
   }, DEBOUNCE_MS)

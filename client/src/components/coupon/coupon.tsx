@@ -27,6 +27,7 @@ export default function Coupon({ className }: CouponProps) {
     try {
       await applyCoupon(couponCode)
     } catch (error) {
+      console.error(error)
       setError("Can not apply coupon")
     } finally {
       setIsProcessing(false)

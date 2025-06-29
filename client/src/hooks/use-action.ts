@@ -12,6 +12,7 @@ import {
 import type { ActionResult, PizzaConfiguratorData } from "actions/actions"
 import type { Drink, Showcase, Size, Topping } from "util/directus-types"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ServerAction<T, Args extends any[] = any[]> = (
   ...args: Args
 ) => Promise<ActionResult<T>>
@@ -20,10 +21,12 @@ interface UseServerAction<T> {
   data: T | null
   loading: boolean
   error: string | null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   execute: (...args: any[]) => Promise<ActionResult<T>>
   reset: () => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useServerAction<T, Args extends any[] = any[]>(
   serverAction: ServerAction<T, Args>
 ): UseServerAction<T> {
@@ -76,21 +79,21 @@ export function useServerAction<T, Args extends any[] = any[]>(
 }
 
 export function useDrinks() {
-  return useServerAction<Drink[]>(getDrinks)
+  return useServerAction<Drink[] | undefined>(getDrinks)
 }
 
 export function useShowcases() {
-  return useServerAction<Showcase[]>(getShowcases)
+  return useServerAction<Showcase[] | undefined>(getShowcases)
 }
 
 export function usePizzaConfiguratorData() {
-  return useServerAction<PizzaConfiguratorData>(getPizzaConfiguratorData)
+  return useServerAction<PizzaConfiguratorData | undefined>(getPizzaConfiguratorData)
 }
 
 export function useSizes() {
-  return useServerAction<Size[]>(getSizes)
+  return useServerAction<Size[] | undefined>(getSizes)
 }
 
 export function useToppings() {
-  return useServerAction<Topping[]>(getToppings)
+  return useServerAction<Topping[] | undefined>(getToppings)
 }

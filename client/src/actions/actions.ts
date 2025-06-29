@@ -3,17 +3,17 @@
 import directus from "lib/directus"
 import type { Drink, Showcase, Size, Topping } from "shared/util/directus-types"
 
-export type ActionResult<T = any> = {
+export type ActionResult<T> = {
   success: boolean
   data?: T
   error?: string
 }
 export interface PizzaConfiguratorData {
-  sizes: ActionResult<Size[]>
-  toppings: ActionResult<Topping[]>
+  sizes: ActionResult<Size[] | undefined>
+  toppings: ActionResult<Topping[] | undefined>
 }
 
-const handleError = (error: unknown): ActionResult => {
+const handleError = (error: unknown): ActionResult<undefined> => {
   console.error("Directus server action error", error)
   return {
     success: false,
@@ -21,7 +21,7 @@ const handleError = (error: unknown): ActionResult => {
   }
 }
 
-export async function getShowcases(): Promise<ActionResult<Showcase[]>> {
+export async function getShowcases(): Promise<ActionResult<Showcase[] | undefined>> {
   try {
     const data = await directus.readItems("showcase", {
       limit: 12,
@@ -54,7 +54,7 @@ export async function getShowcases(): Promise<ActionResult<Showcase[]>> {
   }
 }
 
-export async function getToppings(): Promise<ActionResult<Topping[]>> {
+export async function getToppings(): Promise<ActionResult<Topping[] | undefined>> {
   try {
     const data = await directus.readItems("toppings", {
       fields: ["*", { icon: ["id"] }],
@@ -66,7 +66,7 @@ export async function getToppings(): Promise<ActionResult<Topping[]>> {
   }
 }
 
-export async function getSizes(): Promise<ActionResult<Size[]>> {
+export async function getSizes(): Promise<ActionResult<Size[] | undefined>> {
   try {
     const data = await directus.readItems("sizes", {
       fields: ["*"],
@@ -79,7 +79,7 @@ export async function getSizes(): Promise<ActionResult<Size[]>> {
 }
 
 export async function getPizzaConfiguratorData(): Promise<
-  ActionResult<PizzaConfiguratorData>
+  ActionResult<PizzaConfiguratorData | undefined>
 > {
   try {
     const sizes = await getSizes()
@@ -92,7 +92,7 @@ export async function getPizzaConfiguratorData(): Promise<
   }
 }
 
-export async function getDrinks(): Promise<ActionResult<Drink[]>> {
+export async function getDrinks(): Promise<ActionResult<Drink[] | undefined>> {
   try {
     const data = await directus.readItems("drinks", {
       fields: ["*", { image: ["id"] }],

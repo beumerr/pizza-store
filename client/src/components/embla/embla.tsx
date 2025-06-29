@@ -1,12 +1,12 @@
 "use client"
 
 import React, {
-  useCallback,
   useEffect,
   useState,
   createContext,
   useContext,
   Children,
+  useCallback,
 } from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import AutoHeight from "embla-carousel-auto-height"
@@ -73,9 +73,9 @@ export function EmblaProvider({
     if (emblaApi) emblaApi.scrollTo(index)
   }
 
-  const onSelect = (emblaApi: EmblaCarouselType) => {
+  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
     setSelectedIndex(emblaApi.selectedScrollSnap())
-  }
+  }, [])
 
   useEffect(() => {
     if (!emblaApi) return
