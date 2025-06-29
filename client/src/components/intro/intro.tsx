@@ -43,6 +43,11 @@ export default function Intro() {
   const { hide } = useIntro()
 
   useEffect(() => {
+    if (process.env.DISABLE_INTRO === "TRUE") {
+      hide()
+      return
+    }
+
     document.body.style.overflow = "hidden"
 
     return () => {
