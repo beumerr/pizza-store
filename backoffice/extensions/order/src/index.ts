@@ -34,7 +34,7 @@ export default defineEndpoint((router, { services, getSchema }) => {
 
       // Validate coupon
       const coupon = await getValidCoupon(couponService, couponCode)
-      if (coupon?.error || !coupon?.item) {
+      if (coupon?.error) {
         return res
           .status(coupon?.code ?? 400)
           .json({ error: coupon?.error || "Invalid coupon code" })
@@ -42,7 +42,7 @@ export default defineEndpoint((router, { services, getSchema }) => {
 
       return res.status(200).json({
         success: true,
-        coupon: coupon.item,
+        coupon: coupon?.item,
         message: "Coupon is valid",
       })
     } catch (error) {
@@ -72,11 +72,12 @@ export default defineEndpoint((router, { services, getSchema }) => {
 
       // Validate coupon
       const coupon = await getValidCoupon(couponService, couponCode)
-      if (coupon?.error || !coupon?.item) {
+      if (coupon?.error) {
         return res
           .status(coupon?.code ?? 400)
           .json({ error: coupon?.error || "Invalid coupon code" })
       }
+
       // Validate cart items
       const validationError = validateCartItems(cartItems)
       if (validationError) {
@@ -237,12 +238,8 @@ async function getValidCoupon(
   couponCode?: string
 ): Promise<{ item?: any; error?: string; code?: number } | null> {
   try {
-    if (couponCode === null || couponCode === undefined) {
+    if (!couponCode) {
       return null
-    }
-
-    if (!couponCode || typeof couponCode !== "string") {
-      return { error: "Invalid coupon code", code: 400 }
     }
 
     const couponItem = await couponService.readByQuery({
