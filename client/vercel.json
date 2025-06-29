@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd .. && npm install && npm run test --prefix shared && cd client && npm run build",
+  "buildCommand": "cd ../shared && npm install && npm run test:run && cd ../client && npm install && npm run build",
   "installCommand": "npm install",
   "framework": "nextjs"
 }
