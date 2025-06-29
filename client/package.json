@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/setup-symlink.js",
-    "prebuild": "node scripts/setup-symlink.js",
+    "prebuild": "cd ../shared && npm ci && cd ../client && node scripts/setup-symlink.js && npm run test:shared:run",
     "prestart": "node scripts/setup-symlink.js",
     "dev": "next dev",
     "build": "next build",
