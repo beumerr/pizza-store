@@ -7,6 +7,7 @@ import { EmblaProvider, EmblaSlider } from "@/components/embla/embla"
 import { getDrinks, getSizes, getToppings } from "@/actions/actions"
 
 import style from "./page.module.scss"
+import { IntroProvider } from "@/components/intro/intro"
 
 export default async function Home() {
   const sizes = await getSizes()
@@ -14,7 +15,7 @@ export default async function Home() {
   const toppings = await getToppings()
 
   return (
-    <>
+    <IntroProvider>
       <EmblaProvider>
         <div className={style.container}>
           <EmblaSlider className={style.slider}>
@@ -22,11 +23,11 @@ export default async function Home() {
             <Showcase sizes={sizes.data} />
           </EmblaSlider>
           <div className={style.sidebar}>
-            <PizzaButton />
+            <PizzaButton priority />
             <CartSummary drinks={drinks.data} />
           </div>
         </div>
       </EmblaProvider>
-    </>
+    </IntroProvider>
   )
 }

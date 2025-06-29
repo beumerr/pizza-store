@@ -4,6 +4,7 @@ import React from "react"
 import PriceList from "./cart-price-list"
 import CartControls from "./cart-controls"
 import CartDrinkSelect from "./cart-drink-select"
+import Coupon from "../coupon/coupon"
 
 import { Drink } from "shared/util/directus-types"
 import { cs } from "shared/util/util"
@@ -18,6 +19,7 @@ export default function CartSummary({ drinks }: CartSummaryProps) {
   return (
     <div className={cs(style.CartSummary)}>
       <span className={style.header}>Your order</span>
+      <Coupon className={style.coupon} />
       <PriceList />
       {!!drinks?.length && <CartDrinkSelect drinks={drinks} />}
       <CartControls />

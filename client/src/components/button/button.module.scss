@@ -8,6 +8,7 @@
   font-weight: 900;
   color: var(--white);
   user-select: none;
+  transition: all var(--transition0) 0.3s;
 
   &.green {
     background-color: var(--green);
@@ -24,6 +25,15 @@
 
     &:hover {
       background-color: var(--orangeLight);
+    }
+  }
+
+  &.pink {
+    background-color: var(--pink);
+    border-bottom-color: var(--pinkDark);
+
+    &:hover {
+      background-color: var(--pinkMedium);
     }
   }
 

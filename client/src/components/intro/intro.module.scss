@@ -1,0 +1,77 @@
+.Intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 999;
+  $rayColor: #fee9c9;
+
+  .rays {
+    width: 300vw;
+    height: 300vh;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      var(--creme) 0deg 15deg,
+      $rayColor 15deg 30deg,
+      var(--creme) 30deg 45deg,
+      $rayColor 45deg 60deg,
+      var(--creme) 60deg 75deg,
+      $rayColor 75deg 90deg,
+      var(--creme) 90deg 105deg,
+      $rayColor 105deg 120deg,
+      var(--creme) 120deg 135deg,
+      $rayColor 135deg 150deg,
+      var(--creme) 150deg 165deg,
+      $rayColor 165deg 180deg,
+      var(--creme) 180deg 195deg,
+      $rayColor 195deg 210deg,
+      var(--creme) 210deg 225deg,
+      $rayColor 225deg 240deg,
+      var(--creme) 240deg 255deg,
+      $rayColor 255deg 270deg,
+      var(--creme) 270deg 285deg,
+      $rayColor 285deg 300deg,
+      var(--creme) 300deg 315deg,
+      $rayColor 315deg 330deg,
+      var(--creme) 330deg 345deg,
+      $rayColor 345deg 360deg
+    );
+    position: absolute;
+    left: -100vw;
+    top: -49vh;
+    animation: rotate 60s linear infinite;
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(20px, 2.5vw, 40px);
+
+      .button {
+        width: 100%;
+        border: 0;
+      }
+    }
+  }
+}

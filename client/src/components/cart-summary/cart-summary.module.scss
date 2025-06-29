@@ -14,6 +14,7 @@
   }
 
   .header,
+  .coupon,
   .CartDrinkSelect,
   .PriceList {
     margin-bottom: $spacer;
@@ -38,6 +39,7 @@
     filter: var(--purpleFilter);
     opacity: 0.5;
     transition: opacity 0.2s var(--transition0);
+    pointer-events: none;
   }
 
   &:hover:after {

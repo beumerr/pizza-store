@@ -1,0 +1,84 @@
+.Coupon {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  input {
+    border-radius: var(--borderSmall);
+    border: 1px solid rgba(var(--purpleRGB), 0.2);
+    padding: 5px 10px;
+    font-family: var(--mont);
+    font-weight: 600;
+    color: var(--purple);
+    font-size: var(--fontSmall);
+    outline: none;
+    transition: border var(--transition0) 0.3s;
+    width: 100%;
+    background: transparent;
+
+    &:hover,
+    &:focus {
+      border-color: var(--purple);
+    }
+
+    &::placeholder {
+      color: rgba(var(--purpleRGB), 0.5);
+    }
+  }
+
+  .error {
+    input {
+      border-color: var(--red);
+    }
+  }
+
+  .form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .couponInfo {
+    font-family: var(--mont);
+    font-weight: 600;
+    color: var(--pink);
+    border: 1px solid rgba(var(--purpleRGB), 0.2);
+    border-radius: var(--borderSmall);
+    font-family: var(--mont);
+    font-weight: 600;
+    padding: 8px 10px;
+    font-size: var(--fontSmall);
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 10px;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+
+      svg {
+        path {
+          fill: var(--purple);
+        }
+      }
+    }
+
+    .couponCode {
+      opacity: 0.6;
+    }
+    .couponLabel {
+      flex: 1;
+      display: flex;
+      line-height: 100%;
+      color: var(--purple);
+      gap: 10px;
+
+      .couponDiscount {
+        color: var(--pink);
+      }
+    }
+  }
+}

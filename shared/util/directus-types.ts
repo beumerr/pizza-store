@@ -1,4 +1,4 @@
-/** * Generated TypeScript types for Directus Schema * Generated on: 2025-06-27T02:49:27.360Z */
+/** * Generated TypeScript types for Directus Schema * Generated on: 2025-06-28T20:01:52.691Z */
 export interface PizzasAndDrink {
   id: string;
 }
@@ -73,6 +73,8 @@ export interface Order {
   discountValue: number;
   orderStatus: string;
   cartItems: number[] | OrdersCartItem[];
+  subTotal: number;
+  taxTotal: number;
 }
 
 export interface OrdersCartItem {

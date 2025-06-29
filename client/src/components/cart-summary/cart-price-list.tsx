@@ -1,5 +1,5 @@
-import { getTitle, useCartStore } from "stores/cart"
-import { cs, formatPrice } from "shared/util/util"
+import { useCartStore } from "stores/cart"
+import { getTitle, cs, formatPrice } from "shared/util/util"
 
 import style from "./cart-summary.module.scss"
 

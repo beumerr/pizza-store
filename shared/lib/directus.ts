@@ -1,4 +1,3 @@
-// shared/lib/directus.ts
 import {
   createDirectus,
   staticToken,
@@ -48,7 +47,6 @@ export type CollectionQuery<T extends CollectionKey> = DirectusQuery<
 >
 export type ItemQuery<T extends DirectusKey> = DirectusQuery<Schema, Schema[T]>
 
-// Factory function to create a Directus client
 export const createDirectusClient = (url: string, token: string): DirectusInstance => {
   if (!token) {
     throw new Error("Directus token is required")

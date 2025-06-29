@@ -8,6 +8,7 @@ import { validateCartItems, validatePizza } from "shared/lib/validations"
 import type { CartItem, DrinkCartItem, ItemPrice, PizzaCartItem } from "shared/util/types"
 import type { Coupon } from "util/directus-types"
 import { validate } from "webpack"
+import { fetchDirectus } from "shared/util/util"
 
 export interface CartState {
   items: CartItem[]
@@ -21,7 +22,7 @@ interface CartActions {
   getCartItems: () => CartItem[] | []
   addCartItem: (productType: PRODUCT_TYPE, item: PizzaCartItem | DrinkCartItem) => void
   removeItem: (itemId: string) => void
-  applyCoupon: (coupon: Coupon) => void
+  applyCoupon: (coupon: string) => Promise<void>
   removeCoupon: () => void
   clearCart: () => void
   recalculatePrice: () => void
@@ -127,11 +128,45 @@ export const useCartStore = create<CartStore>()(
 
           state.recalculatePrice()
         },
-        applyCoupon: (coupon: Coupon) => {
-          // todo #US_10
+        applyCoupon: async (couponCode: string) => {
+          const state = get()
+          const formatCode = couponCode.trim()
+
+          if (!formatCode) {
+            state.setError("Enter coupon code")
+          }
+
+          try {
+            const validateCoupon = await fetchDirectus("/order/validate-coupon", {
+              method: "POST",
+              body: JSON.stringify({ couponCode: formatCode }),
+            })
+
+            if (validateCoupon?.error || !validateCoupon?.coupon) {
+              state.setError(validateCoupon?.error || "Can not validate coupon")
+              return
+            }
+
+            const coupon = validateCoupon.coupon as Coupon
+            set({ coupon })
+
+            state.recalculatePrice()
+          } catch (error) {
+            const err =
+              error instanceof Error ? error.message : "Failed to validate coupon"
+            console.error(err, error)
+            state.setError(err)
+          }
         },
         removeCoupon: () => {
-          // todo #US_10
+          const state = get()
+          if (!state.coupon) {
+            state.setError("No coupon applied")
+            return
+          }
+
+          set({ coupon: null })
+          state.recalculatePrice()
         },
         clearCart: () => {
           set({
@@ -147,12 +182,13 @@ export const useCartStore = create<CartStore>()(
             return total + item.itemPrice * item.quantity
           }, 0)
 
-          const discountAmount = 0 // todo #US_10
+          const discountPercentage = state.coupon?.discountPercentage || 0
+          const discountAmount = (itemsTotal * discountPercentage) / 100
           const total = itemsTotal - discountAmount
 
           set({
-            discountAmount: Math.round(discountAmount * 100) / 100,
-            total: Math.round(total * 100) / 100,
+            discountAmount,
+            total,
           })
         },
         submitOrder: async () => {
@@ -164,23 +200,16 @@ export const useCartStore = create<CartStore>()(
           }
 
           try {
-            const createOrder = await fetch(
-              `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/order/create`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  cartItems: get().items,
-                }),
-              }
-            )
+            const createOrder = await fetchDirectus("/order/create", {
+              method: "POST",
+              body: JSON.stringify({
+                cartItems: get().items,
+                couponCode: get().coupon?.code || null,
+              }),
+            })
 
-            const json = await createOrder.json()
-
-            if (json?.error || !createOrder.ok) {
-              state.setError(json?.error || "Failed to create order")
+            if (createOrder?.error) {
+              state.setError(createOrder.error || "Failed to create order")
               return
             }
 
@@ -202,33 +231,16 @@ export const useCartStore = create<CartStore>()(
         name: "pizza-cart-storage",
         partialize: (state) => ({
           items: state.items,
+          coupon: state.coupon,
         }),
         onRehydrateStorage: () => (state) => {
           state?.recalculatePrice()
+
+          if (state?.coupon?.code) {
+            state?.applyCoupon(state?.coupon?.code || "")
+          }
         },
       }
-    ),
-    { name: "pizza-cart" }
+    )
   )
 )
-
-export const getTitle = (item: PizzaCartItem | DrinkCartItem) => {
-  const titleMap: Record<PRODUCT_TYPE, () => { name: string; sub?: string }> = {
-    [PRODUCT_TYPE.PIZZA]: () => {
-      const { pizza, pizzaSize, pizzaToppings } = item as PizzaCartItem
-      const name = pizza.name || "Your pizza"
-      const size = pizzaSize.sizeDiameter
-
-      return {
-        name: `${name} (${size}CM)`,
-        sub: pizzaToppings?.map((t) => t.name).join(", ") || "No toppings",
-      }
-    },
-    [PRODUCT_TYPE.DRINK]: () => {
-      const { drink } = item as DrinkCartItem
-      return { name: drink.name }
-    },
-  }
-
-  return titleMap[item.productType]()
-}

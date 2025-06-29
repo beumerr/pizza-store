@@ -27,7 +27,6 @@ export default async function Showcase({ sizes }: ShowcaseProps) {
   return (
     <div className={style.Showcase}>
       {showcase.data.map((item, showcaseIndex) => {
-        console.log("Showcase item", item)
         return (
           <div key={`showcase_${showcaseIndex}`} className={style.item}>
             <h2 className={style.title}>{item.title}</h2>

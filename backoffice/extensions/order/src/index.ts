@@ -21,9 +21,42 @@ type PartialOrder = DeepPartial<Order>
 const DEFAULT_TAX_RATE = parseInt(process.env.DEFAULT_TAX_RATE || "21")
 
 export default defineEndpoint((router, { services, getSchema }) => {
+  router.post("/validate-coupon", async (req, res) => {
+    try {
+      const { couponCode } = req.body as { couponCode: string }
+
+      // Initialize services
+      const { ItemsService } = services
+      const schema = await getSchema()
+      const accountability = null
+      const couponService = new ItemsService("coupons", { schema, accountability })
+
+      // Validate coupon
+      const coupon = await getValidCoupon(couponService, couponCode)
+      if (coupon?.error || !coupon?.item) {
+        return res
+          .status(coupon?.code ?? 400)
+          .json({ error: coupon?.error || "Invalid coupon code" })
+      }
+
+      return res.status(200).json({
+        success: true,
+        coupon: coupon.item,
+        message: "Coupon is valid",
+      })
+    } catch (error) {
+      console.error("Error validating coupon", error)
+      return res.status(500).json({
+        error: "Internal server error while validating coupon",
+      })
+    }
+  })
   router.post("/create", async (req, res) => {
     try {
-      const { cartItems } = req.body as { cartItems: CartItem[] }
+      const { cartItems, couponCode } = req.body as {
+        cartItems: CartItem[]
+        couponCode?: string
+      }
 
       // Initialize services
       const { ItemsService } = services
@@ -34,7 +67,15 @@ export default defineEndpoint((router, { services, getSchema }) => {
       const pizzaService = new ItemsService("pizzas", { schema, accountability })
       const orderService = new ItemsService("orders", { schema, accountability })
       const settingsService = new ItemsService("settings", { schema, accountability })
+      const couponService = new ItemsService("coupons", { schema, accountability })
 
+      // Validate coupon
+      const coupon = await getValidCoupon(couponService, couponCode)
+      if (coupon?.error || !coupon?.item) {
+        return res
+          .status(coupon?.code ?? 400)
+          .json({ error: coupon?.error || "Invalid coupon code" })
+      }
       // Validate cart items
       const validationError = validateCartItems(cartItems)
       if (validationError) {
@@ -60,26 +101,41 @@ export default defineEndpoint((router, { services, getSchema }) => {
         (total, item) => total + (item.totalPrice || 0),
         0
       )
+
+      const discountPercentage = coupon?.item?.discountPercentage || 0
       const taxPercentage = await getTaxRate(settingsService)
-      const totalExcludingTax = totalIncludingTax / (1 + taxPercentage / 100)
+      const subTotal = totalIncludingTax / (1 + taxPercentage / 100)
+      const discountValue = (subTotal * discountPercentage) / 100
+      const totalExc = subTotal - discountValue
+      const taxTotal = (totalExc * taxPercentage) / 100
+      const totalInc = totalExc + taxTotal
 
       // Create and insert order
       const orderData: PartialOrder = {
-        orderStatus: "new",
-        discountPercentage: 0,
-        discountValue: 0,
         cartItems: createdCartItems.map((cartItem_id) => ({ cartItem_id })),
-        totalInc: totalIncludingTax,
-        totalExc: totalExcludingTax,
+        orderStatus: "new",
+        totalInc,
+        totalExc,
+        subTotal,
+        taxTotal,
         taxPercentage,
+        discountPercentage,
+        discountValue,
       }
+
       const createdOrder = await orderService.createOne(orderData)
 
       if (!createdOrder) {
         return res.status(500).json({ error: "Failed to create order" })
       }
 
-      // Order created successfully
+      // Update coupon consume count
+      if (coupon?.item) {
+        await couponService.updateOne(coupon.item.id, {
+          consumeCount: coupon.item.consumeCount + 1,
+        })
+      }
+
       return res.status(200).json({
         success: true,
         orderId: createdOrder.id,
@@ -128,9 +184,8 @@ const processCartItems: Record<
         } catch (error) {
           throw new Error(`Pizza with ID ${pizzaItem.pizza.id} not found`)
         }
-
-        // Else create a new pizza
       } else {
+        // Else create a new pizza
         const pizza = await pizzaService.createOne({
           pizzaType: "generated",
           name: pizzaItem.pizza.name,
@@ -173,6 +228,43 @@ async function getTaxRate(settingsService: any): Promise<number> {
   } catch (error) {
     console.error("Error fetching tax rate from settings", error)
     return DEFAULT_TAX_RATE
+  }
+}
+
+async function getValidCoupon(
+  couponService: any,
+  couponCode?: string
+): Promise<{ item?: any; error?: string; code?: number } | null> {
+  try {
+    if (couponCode === null || couponCode === undefined) {
+      return null
+    }
+
+    if (!couponCode || typeof couponCode !== "string") {
+      return { error: "Invalid coupon code", code: 400 }
+    }
+
+    const couponItem = await couponService.readByQuery({
+      limit: 1,
+      fields: ["*"],
+      filter: { code: { _eq: couponCode } },
+    })
+
+    if (!couponItem?.length) {
+      return { error: "Coupon not found", code: 404 }
+    }
+
+    if (
+      couponItem[0].amountOfUses !== -1 &&
+      couponItem[0].consumeCount >= couponItem[0].amountOfUses
+    ) {
+      return { error: "Coupon already consumed", code: 409 }
+    }
+
+    return { item: couponItem[0] }
+  } catch (error) {
+    console.error("Error fetching coupon", error)
+    throw new Error("Failed to fetch coupon")
   }
 }
 

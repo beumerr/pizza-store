@@ -41,10 +41,10 @@ export interface EmblaProviderProps {
   options?: EmblaOptionsType
 }
 
-export const EmblaProvider = ({
+export function EmblaProvider({
   children,
   options = { loop: false, watchDrag: true },
-}: EmblaProviderProps) => {
+}: EmblaProviderProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const plugins = [AutoHeight()]
@@ -106,11 +106,7 @@ export interface EmblaSliderProps {
   slideClassName?: string
 }
 
-export const EmblaSlider = ({
-  children,
-  className,
-  slideClassName,
-}: EmblaSliderProps) => {
+export function EmblaSlider({ children, className, slideClassName }: EmblaSliderProps) {
   const { emblaRef, selectedIndex } = useEmbla()
 
   const slides = Children.toArray(children)
