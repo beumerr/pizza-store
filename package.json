@@ -1,8 +1,14 @@
 {
   "name": "pizza-store",
   "private": true,
+  "workspaces": [
+    "shared",
+    "client"
+  ],
   "scripts": {
-    "build": "cd shared && npm ci && npm run test:run && cd client && npm ci && npm run build"
+    "test:shared": "vitest run --config shared/vitest.config.ts",
+    "build:client": "npm run build --workspace=client",
+    "build": "npm run test:shared && npm run build:client"
   },
   "dependencies": {
     "next": "15.3.4"
