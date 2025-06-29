@@ -1,0 +1,7 @@
+{
+  "name": "pizza-store",
+  "private": true,
+  "scripts": {
+    "build": "cd shared && npm ci && npm run test:run && cd ../client && npm ci && npm run build"
+  }
+}
