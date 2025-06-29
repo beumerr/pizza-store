@@ -1,0 +1,25 @@
+# Dockerfile
+FROM node:22-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy shared dependencies first
+COPY shared/ ./shared/
+WORKDIR /app/shared
+RUN npm install
+
+# Copy backoffice and install dependencies
+WORKDIR /app
+COPY backoffice/ ./backoffice/
+WORKDIR /app/backoffice
+RUN npm install
+
+# Build extensions
+RUN npm run build:extensions
+
+# Expose port
+EXPOSE 8055
+
+# Start the application
+CMD ["npm", "start"]
