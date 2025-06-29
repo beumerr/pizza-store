@@ -1,9 +1,9 @@
 import dotenv from "dotenv"
 
 import { defineEndpoint } from "@directus/extensions-sdk"
-import { validateCartItems } from "../../../shared/lib/validations"
-import { PRODUCT_TYPE } from "../../../shared/util/types"
-import { calculatePizzaPriceBreakdown } from "../../../shared/lib/calculations"
+import { validateCartItems } from "./shared/lib/validations"
+import { PRODUCT_TYPE } from "./shared/util/types"
+import { calculatePizzaPriceBreakdown } from "./shared/lib/calculations"
 
 import type {
   CartItem,
@@ -11,11 +11,8 @@ import type {
   DeepPartial,
   DrinkCartItem,
   BaseCartItem,
-} from "../../../shared/util/types"
-import type {
-  CartItem as DirectusCartItem,
-  Order,
-} from "../../../shared/util/directus-types"
+} from "./shared/util/types"
+import type { CartItem as DirectusCartItem, Order } from "./shared/util/directus-types"
 
 dotenv.config()
 
