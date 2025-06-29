@@ -1,6 +1,6 @@
 import { createDirectusClient, createDirectusAPI } from "shared/lib/directus"
 
-const DIRECTUS_URL = process.env.DIRECTUS_URL
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN
 
 if (!DIRECTUS_URL) {

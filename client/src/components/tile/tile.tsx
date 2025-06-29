@@ -23,7 +23,6 @@ export interface TileProps {
 
 export default function Tile({
   className,
-  id,
   sub,
   product,
   productType,
@@ -36,7 +35,7 @@ export default function Tile({
     <div className={cs(style.Tile, className)}>
       <div className={style.header}>
         <Image
-          src={`${process.env.DIRECTUS_URL}/assets/${typeof image === "string" ? image : image.id}`}
+          src={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${typeof image === "string" ? image : image.id}`}
           alt={`Pizza ${name}`}
           width={225}
           height={125}

@@ -48,20 +48,13 @@ export type CollectionQuery<T extends CollectionKey> = DirectusQuery<
 export type ItemQuery<T extends DirectusKey> = DirectusQuery<Schema, Schema[T]>
 
 export const createDirectusClient = (url: string, token: string): DirectusInstance => {
-  if (!token) {
-    throw new Error("Directus token is required")
-  }
-  if (!url) {
-    throw new Error("Directus URL is required")
-  }
-
   return createDirectus<Schema>(url)
     .with(staticToken(token))
     .with(
       rest({
         onRequest: (options) => ({
           ...options,
-          cache: "no-store",
+          cache: process.env.NODE_ENV === "development" ? "no-store" : "default",
         }),
       })
     )
