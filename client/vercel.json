@@ -1,5 +1,6 @@
 {
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "framework": "nextjs"
+  "buildCommand": "cd shared && npm ci && npm run test:run && cd ../client && npm ci && npm run build",
+  "installCommand": "echo 'Installing in subdirectories'",
+  "framework": "nextjs",
+  "outputDirectory": "client/.next"
 }
