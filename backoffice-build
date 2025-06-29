@@ -21,7 +21,7 @@ RUN npm run copy
 RUN npm run build:extensions
 
 # Expose port
-EXPOSE 8055
+EXPOSE 8080
 
 # Start the application
 CMD ["npm", "start"]
