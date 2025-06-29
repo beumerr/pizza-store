@@ -5,7 +5,7 @@ import type { Compiler, Compilation } from "webpack"
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["127.0.0.1"],
+    domains: ["127.0.0.1", "https://backoffice-xrdoh.ondigitalocean.app"],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
