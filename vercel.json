@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "installCommand": "echo 'No root dependencies'",
+  "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": "client/.next"
 }
