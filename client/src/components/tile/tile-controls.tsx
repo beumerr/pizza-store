@@ -44,6 +44,8 @@ export default function TileControls({ productType, product, sizes }: TileContro
     return productPrice
   }, [productType, selectedSize, product])
 
+  const formattedPrice = useMemo(() => formatPrice(price), [price])
+
   const handleAddToCart = () => {
     if (productType === PRODUCT_TYPE.PIZZA && !selectedSize) {
       setError("Select a size")
@@ -82,7 +84,7 @@ export default function TileControls({ productType, product, sizes }: TileContro
         </div>
       )}
       <div className={style.row}>
-        <div className={style.price}>{formatPrice(price)}</div>
+        <div className={style.price}>{formattedPrice}</div>
         <Button size="small" color="green" onClick={handleAddToCart}>
           Add
         </Button>

@@ -42,17 +42,19 @@ export function IntroProvider({ children }: IntroProviderProps) {
 export default function Intro() {
   const { hide } = useIntro()
 
-  if (process.env.NEXT_PUBLIC_DISABLE_INTRO == "true") {
-    return null
-  }
-
   useEffect(() => {
-    document.body.style.overflow = "hidden"
+    if (process.env.NEXT_PUBLIC_DISABLE_INTRO == "true") {
+      document.body.style.overflow = "hidden"
+    }
 
     return () => {
       document.body.style.overflow = ""
     }
   }, [hide])
+
+  if (process.env.NEXT_PUBLIC_DISABLE_INTRO == "true") {
+    return null
+  }
 
   return (
     <div className={style.Intro} data-intro>

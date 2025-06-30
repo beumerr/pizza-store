@@ -15,6 +15,7 @@ COPY backoffice/ ./backoffice/
 WORKDIR /app/backoffice
 RUN npm install
 
+# Copy shared folder inside extensions
 RUN npm run copy
 
 # Build extensions
