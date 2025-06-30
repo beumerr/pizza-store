@@ -69,6 +69,9 @@ export default defineEndpoint((router, { services, getSchema }) => {
       const orderService = new ItemsService("orders", { schema, accountability })
       const settingsService = new ItemsService("settings", { schema, accountability })
       const couponService = new ItemsService("coupons", { schema, accountability })
+      const sizeService = new ItemsService("sizes", { schema, accountability })
+      const drinkService = new ItemsService("drinks", { schema, accountability })
+      const toppingsService = new ItemsService("toppings", { schema, accountability })
 
       // Validate coupon
       const coupon = await getValidCoupon(couponService, couponCode)
@@ -89,10 +92,17 @@ export default defineEndpoint((router, { services, getSchema }) => {
         cartItems.map((item) => {
           // TODO get toppings and drinks from database
           // https://trello.com/c/QLGbo5RB/26-fix-dont-use-client-side-data-for-topping-price-calculations
-          return processCartItems[item.productType](item, pizzaService)
+
+          return processCartItems[item.productType](item, {
+            pizzaService,
+            sizeService,
+            drinkService,
+            toppingsService,
+          })
         })
       )
 
+      console.log(3333, processedCartItems)
       // Insert cart items
       const createdCartItems = (await cartItemService.createMany(
         processedCartItems as PartialCartItem[]
@@ -158,52 +168,78 @@ export default defineEndpoint((router, { services, getSchema }) => {
 // Find or create product types and format CartItem props
 const processCartItems: Record<
   PRODUCT_TYPE,
-  (item: CartItem, pizzaService: any) => Promise<PartialCartItem>
+  (
+    item: CartItem,
+    {
+      pizzaService,
+      sizeService,
+      drinkService,
+      toppingsService,
+    }: { pizzaService: any; sizeService: any; drinkService: any; toppingsService: any }
+  ) => Promise<PartialCartItem>
 > = {
-  [PRODUCT_TYPE.PIZZA]: async (item, pizzaService) => {
+  [PRODUCT_TYPE.PIZZA]: async (item, { pizzaService, sizeService, toppingsService }) => {
     try {
-      // Base props
       const pizzaItem = item as PizzaCartItem & BaseCartItem
       const props: PartialCartItem = {
         productType: PRODUCT_TYPE.PIZZA,
-        pizzaSize: pizzaItem.pizzaSize.id,
         uid: pizzaItem.uid,
         quantity: pizzaItem.quantity,
-        pizzaToppings:
-          pizzaItem.pizzaToppings?.map((topping) => ({
-            toppings_id: topping.id,
-          })) || [],
-        totalPrice: calculatePizzaPriceBreakdown(
-          pizzaItem.pizzaSize,
-          pizzaItem.pizzaToppings
-        ).total,
       }
 
-      // Check if pizza already exists
+      // Check if size exists
+      const dbSize = await sizeService.readByQuery({
+        limit: 1,
+        fields: ["*"],
+        filter: { id: { _eq: pizzaItem.pizzaSize.id } },
+      })
+
+      if (!dbSize || dbSize.length === 0) {
+        throw new Error(`Size with ${pizzaItem.pizzaSize.id} not found`)
+      }
+
+      props.pizzaSize = dbSize[0].id
+
+      // Check if toppings exists
+      const dbToppings = await toppingsService.readByQuery({
+        limit: -1,
+        fields: ["*"],
+        filter: { id: { _in: pizzaItem.pizzaToppings?.map((t) => t.id) || [] } },
+      })
+
+      if (!dbToppings || dbToppings.length === 0) {
+        throw new Error(
+          `Toppings with ${pizzaItem.pizzaToppings?.map((t) => t.id)} not found`
+        )
+      }
+
+      props.pizzaToppings = dbToppings.map((topping: any) => ({
+        toppings_id: topping.id,
+      }))
+
+      // Calculate total price
+      props.totalPrice = calculatePizzaPriceBreakdown(dbSize[0], dbToppings).total
+
+      // Check if pizza exists
       if (pizzaItem.pizza.id) {
-        try {
-          const existingPizza = await pizzaService.readOne(pizzaItem.pizza.id)
-          if (!existingPizza) {
-            throw new Error(`Pizza with ID ${pizzaItem.pizza.id} not found`)
-          }
-          props.pizza = existingPizza.id
-        } catch (error) {
+        const existingPizza = await pizzaService.readOne(pizzaItem.pizza.id)
+        if (!existingPizza) {
           throw new Error(`Pizza with ID ${pizzaItem.pizza.id} not found`)
         }
+
+        props.pizza = existingPizza.id
       } else {
-        // Else create a new pizza
+        // Else create new pizza
         const pizza = await pizzaService.createOne({
           pizzaType: "generated",
           name: pizzaItem.pizza.name,
-          toppings:
-            pizzaItem.pizzaToppings?.map((topping) => ({
-              toppings_id: topping.id,
-            })) || [],
+          toppings: props.pizzaToppings,
         })
 
         if (!pizza) {
           throw new Error("Failed to create pizza")
         }
+
         props.pizza = pizza
       }
 
@@ -214,16 +250,34 @@ const processCartItems: Record<
     }
   },
 
-  [PRODUCT_TYPE.DRINK]: async (item) => {
-    const drinkItem = item as DrinkCartItem & BaseCartItem
-    const props: PartialCartItem = {
-      productType: PRODUCT_TYPE.DRINK,
-      uid: drinkItem.uid,
-      quantity: drinkItem.quantity,
-      drink: drinkItem.drink.id,
-      totalPrice: drinkItem.drink.price * drinkItem.quantity,
+  [PRODUCT_TYPE.DRINK]: async (item, { drinkService }) => {
+    try {
+      const drinkItem = item as DrinkCartItem & BaseCartItem
+
+      const props: PartialCartItem = {
+        productType: PRODUCT_TYPE.DRINK,
+        uid: drinkItem.uid,
+        quantity: drinkItem.quantity,
+      }
+
+      const dbDrink = await drinkService.readByQuery({
+        limit: 1,
+        fields: ["*"],
+        filter: { id: { _eq: drinkItem.drink.id } },
+      })
+
+      if (!dbDrink || dbDrink.length === 0) {
+        throw new Error(`Drink with ID ${drinkItem.drink.id} not found`)
+      }
+
+      props.drink = dbDrink[0].id
+      props.totalPrice = dbDrink[0].price * drinkItem.quantity
+
+      return props
+    } catch (error) {
+      console.error("Error processing drink item", error)
+      throw new Error("Failed to process drink item")
     }
-    return props
   },
 }
 
