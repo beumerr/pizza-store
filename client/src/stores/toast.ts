@@ -24,11 +24,6 @@ const TOAST_TIMER = 10000 // 10 seconds
 let idCounter = 0
 let removeToastCallback: ((id: number) => void) | null = null
 
-// Function to register the remove callback from ToastProvider
-export const setRemoveToastCallback = (callback: (id: number) => void) => {
-  removeToastCallback = callback
-}
-
 export const useToastStore = create<ToastState & ToastActions>((set, get) => ({
   toasts: [],
   removingToasts: new Set(),
@@ -41,7 +36,7 @@ export const useToastStore = create<ToastState & ToastActions>((set, get) => ({
       toasts: [...state.toasts, newToast],
     }))
 
-    // Auto-remove after timer - call the same remove function as manual clicks
+    // Auto-remove after timer
     setTimeout(() => {
       if (removeToastCallback) {
         removeToastCallback(id)
@@ -72,7 +67,10 @@ export const useToastStore = create<ToastState & ToastActions>((set, get) => ({
   },
 }))
 
-// Export a simple function that can be called from anywhere
 export const addToast = (toast: Omit<Toast, "id">): number => {
   return useToastStore.getState().addToast(toast)
+}
+
+export const setRemoveToastCallback = (callback: (id: number) => void) => {
+  removeToastCallback = callback
 }

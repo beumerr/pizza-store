@@ -5,8 +5,8 @@ const SECRET = process.env.REVALIDATE_SECRET
 
 if (!SECRET) throw new Error("Missing REVALIDATE_SECRET env var")
 
-// 10 sec throttle on revalidate
-const THROTTLE_MS = 10 * 1000
+// 2 sec throttle on revalidate
+const THROTTLE_MS = 2 * 1000
 let lastExecutionTime = 0
 
 export async function POST(req: NextRequest) {
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
       console.log("Revalidate `api` tag and `/` path")
       revalidatePath("/")
       revalidateTag("api")
+
       return NextResponse.json({
         executed: true,
         message: "Revalidation executed immediately",

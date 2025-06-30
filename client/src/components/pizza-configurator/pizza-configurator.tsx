@@ -30,6 +30,7 @@ export default function PizzaConfigurator({ sizes, toppings }: PizzaConfigurator
   const { addToast } = useToastStore()
 
   const visibleToppings = useMemo(() => toppings.filter((t) => !t.isHidden), [toppings])
+
   const priceBreakdown = useMemo(() => {
     if (!selectedSize) {
       return { basePrice: 0, toppingsPrice: 0, total: 0 }

@@ -86,7 +86,11 @@ export default defineEndpoint((router, { services, getSchema }) => {
 
       // Format cart items
       const processedCartItems = await Promise.all(
-        cartItems.map((item) => processCartItems[item.productType](item, pizzaService))
+        cartItems.map((item) => {
+          // TODO get toppings and drinks from database
+          // https://trello.com/c/QLGbo5RB/26-fix-dont-use-client-side-data-for-topping-price-calculations
+          return processCartItems[item.productType](item, pizzaService)
+        })
       )
 
       // Insert cart items
