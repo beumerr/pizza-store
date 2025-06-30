@@ -54,7 +54,6 @@ export const createDirectusClient = (url: string, token: string): DirectusInstan
       rest({
         onRequest: (options) => ({
           ...options,
-          cache: "no-store",
           next: { tags: ["api"] },
         }),
       })
