@@ -90,9 +90,6 @@ export default defineEndpoint((router, { services, getSchema }) => {
       // Format cart items
       const processedCartItems = await Promise.all(
         cartItems.map((item) => {
-          // TODO get toppings and drinks from database
-          // https://trello.com/c/QLGbo5RB/26-fix-dont-use-client-side-data-for-topping-price-calculations
-
           return processCartItems[item.productType](item, {
             pizzaService,
             sizeService,
@@ -102,7 +99,6 @@ export default defineEndpoint((router, { services, getSchema }) => {
         })
       )
 
-      console.log(3333, processedCartItems)
       // Insert cart items
       const createdCartItems = (await cartItemService.createMany(
         processedCartItems as PartialCartItem[]
@@ -253,13 +249,13 @@ const processCartItems: Record<
   [PRODUCT_TYPE.DRINK]: async (item, { drinkService }) => {
     try {
       const drinkItem = item as DrinkCartItem & BaseCartItem
-
       const props: PartialCartItem = {
         productType: PRODUCT_TYPE.DRINK,
         uid: drinkItem.uid,
         quantity: drinkItem.quantity,
       }
 
+      // Check if drink exists
       const dbDrink = await drinkService.readByQuery({
         limit: 1,
         fields: ["*"],
@@ -270,6 +266,7 @@ const processCartItems: Record<
         throw new Error(`Drink with ID ${drinkItem.drink.id} not found`)
       }
 
+      // Calculate total price
       props.drink = dbDrink[0].id
       props.totalPrice = dbDrink[0].price * drinkItem.quantity
 
